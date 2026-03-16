@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AuthServerice;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,17 +21,24 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
-        $validDate = $request->validate([
+        $validData = $request->validate([
             'fullname' => 'required|string|max:100',
-            'email' => 'required|string|email',
+            'email' => 'required|string|email|unique:users',
             'phone_number' => 'nullable|string|max:20',
             'password' => 'required|string|min:8|max:50|confirmed'
         ]);
 
-        $service = new AuthServerice();
-        $service->register($request);
+        try {
 
-        return redirect('/');
+            $service = new AuthService();
+            $service->register($validData);
+    
+            return redirect('/');
+
+        } catch (\Exception) {
+            return back()->with('error', 'Something went wrong.'); 
+        }
+
     }
 
     public function login(Request $request)
@@ -42,7 +49,7 @@ class AuthController extends Controller
         ]);
 
 
-        $service = new AuthServerice();
+        $service = new AuthService();
         $service->login($credentials);
 
         $user = Auth::user();

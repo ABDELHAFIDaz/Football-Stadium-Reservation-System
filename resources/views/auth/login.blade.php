@@ -70,7 +70,8 @@
       <p class="text-[.84rem] text-white/40 mt-2">Enter your credentials to continue.</p>
     </div>
 
-    <form onsubmit="return false;" action="{{ route('login') }}" class="space-y-4">
+    <form method="post" onsubmit="return false;" action="{{ route('login') }}" class="space-y-4">
+      @csrf
       <!-- EMAIL -->
       <div>
         <label class="block text-[.74rem] font-medium text-white/40 uppercase tracking-widest mb-2">Email Address</label>

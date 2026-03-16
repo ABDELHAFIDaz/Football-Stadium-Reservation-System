@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Hash;
 
 // use function Pest\Laravel\session;
 
-class AuthServerice{
+class AuthService
+{
 
     public function register($data)
     {
@@ -17,20 +18,21 @@ class AuthServerice{
             'fullname' => $data['fullname'],
             'email' => $data['email'],
             'phone_number' => $data['phone_number'],
-            'password' => Hash::make($data['name']),
-            'role' => 'client'
+            'password' => Hash::make($data['password']),
+            'role' => 'customer',
+            // 'is_adult' => 1
         ]);
 
-        if($newUser){
+        // to login the new user automatically, without needing tyhe user to login after the sign up
+        if ($newUser) {
             Auth::login($newUser);
         }
-
     }
 
     public function login($credentials)
     {
-        if(Auth::attempt($credentials)){
-            
+        if (Auth::attempt($credentials)) {
+
             session()->regenerate();
             // Auth::login(User::where('email', $credentials['email'])->get());
             Auth::user();
