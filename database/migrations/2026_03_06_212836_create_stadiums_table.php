@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('stadiums', function (Blueprint $table) {
             $table->id();
-            $table->foreingId('managerId')->constrained('users')->onDelete('cascade');
+            $table->foreignId('managerId')->constrained('users')->onDelete('cascade');
             $table->string('name',100);
             $table->string('city',100);
             $table->string('address',100);
