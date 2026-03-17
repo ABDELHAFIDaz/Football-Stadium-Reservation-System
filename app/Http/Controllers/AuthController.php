@@ -50,18 +50,19 @@ class AuthController extends Controller
 
 
         $service = new AuthService();
-        $service->login($credentials);
+
+        if(!$service->login($credentials)){
+            return back()->withErrors(['email' =>'Invalide email or password'])->withInput();
+        }
 
         $user = Auth::user();
-        dd($user);
 
         if ($user->role === 'admin') {
             return redirect('/admin');
-        } elseif ($user->role === 'client') {
+        } else{
             return redirect('/');
-        } else {
-            return redirect('/loginPage');
         }
+
     }
 
 

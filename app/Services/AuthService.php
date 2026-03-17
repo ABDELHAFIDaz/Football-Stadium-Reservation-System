@@ -27,6 +27,7 @@ class AuthService
         if ($newUser) {
             Auth::login($newUser);
         }
+        
     }
 
     public function login($credentials)
@@ -34,8 +35,9 @@ class AuthService
         if (Auth::attempt($credentials)) {
 
             session()->regenerate();
-            // Auth::login(User::where('email', $credentials['email'])->get());
-            Auth::user();
+            return true;        
         }
+
+        return false;
     }
 }
