@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-// use function Pest\Laravel\session;
 
 class AuthService
 {
@@ -20,7 +19,6 @@ class AuthService
             'phone_number' => $data['phone_number'],
             'password' => Hash::make($data['password']),
             'role' => 'customer',
-            // 'is_adult' => 1
         ]);
 
         // to login the new user automatically, without needing tyhe user to login after the sign up

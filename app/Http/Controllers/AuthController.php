@@ -32,13 +32,11 @@ class AuthController extends Controller
 
             $service = new AuthService();
             $service->register($validData);
-    
+
             return redirect('/');
-
         } catch (\Exception) {
-            return back()->with('error', 'Something went wrong.'); 
+            return back()->with('error', 'Something went wrong.');
         }
-
     }
 
     public function login(Request $request)
@@ -51,24 +49,25 @@ class AuthController extends Controller
 
         $service = new AuthService();
 
-        if(!$service->login($credentials)){
-            return back()->withErrors(['email' =>'Invalide email or password'])->withInput();
+        if (!$service->login($credentials)) {
+            return back()->withErrors(['email' => 'Invalide email or password'])->withInput();
         }
 
         $user = Auth::user();
 
         if ($user->role === 'admin') {
             return redirect('/admin');
-        } else{
+        } else {
             return redirect('/');
         }
-
     }
 
 
     public function logout()
     {
         Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
         return redirect('/');
     }
 }
