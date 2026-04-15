@@ -88,12 +88,13 @@
         <div class="text-[.7rem] text-white/40 uppercase tracking-widest font-semibold mb-3">City</div>
         <select class="w-full bg-card border border-neon/10 rounded-xl px-3 py-2.5 text-white/70 text-sm outline-none focus:border-neon/35 transition-all">
           <option>All Cities</option>
-          <!-- @foreach($cities as $city) -->
-          <option>Casablanca</option>
-          <option>Rabat</option>
+          @foreach($cities as $city)
+          <option>{{ $city->name }}</option>
+          @endforeach
+          <!-- <option>Rabat</option>
           <option>Marrakech</option>
           <option>Fes</option>
-          <option>Tanger</option>
+          <option>Tanger</option> -->
         </select>
       </div>
 
@@ -128,11 +129,11 @@
         <div class="flex items-center gap-3">
           <span class="text-xs text-white/35">Sort by:</span>
           <select class="bg-card border border-neon/10 rounded-lg px-3 py-2 text-white/70 text-xs outline-none focus:border-neon/30 transition-all">
-            <option>Relevance</option>
+            <!-- <option>Relevance</option> -->
             <option>Price: Low to High</option>
             <option>Price: High to Low</option>
-            <option>Rating</option>
-            <option>Nearest</option>
+            <!-- <option>Rating</option> -->
+            <!-- <option>Nearest</option> -->
           </select>
         </div>
       </div>

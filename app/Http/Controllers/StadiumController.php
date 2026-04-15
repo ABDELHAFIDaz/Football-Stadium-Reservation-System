@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stadium;
+use App\Models\City;
 use Illuminate\Http\Request;
 
 class StadiumController extends Controller
@@ -10,7 +11,8 @@ class StadiumController extends Controller
     public function showStadiums(){
 
         $stadiums = Stadium::all();
-       return view('pitches', compact('stadiums'));
+        $cities = City::all();
+       return view('pitches', compact('stadiums', 'cities'));
     }
 
     public function addStaduim(Request $request){
