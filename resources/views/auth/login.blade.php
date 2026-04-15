@@ -137,12 +137,12 @@
         </div>
 
         <!-- REMEMBER + FORGOT -->
-        <div class="flex items-center justify-between pt-1">
+        <!-- <div class="flex items-center justify-between pt-1">
           <label class="flex items-center gap-2.5 text-[.81rem] text-white/40 cursor-pointer">
             <input type="checkbox" class="w-4 h-4 accent-neon rounded cursor-pointer"> Remember me
           </label>
           <a href="#" class="text-[.81rem] text-neon hover:opacity-75 transition-opacity">Forgot password?</a>
-        </div>
+        </div> -->
 
         <!-- SUBMIT -->
         <button type="submit" class="glow w-full bg-neon text-ink font-syne font-bold text-sm tracking-wider py-4 rounded-xl hover:opacity-90 hover:-translate-y-px transition-all mt-2">
