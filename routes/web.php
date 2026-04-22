@@ -4,7 +4,7 @@ use App\Http\Controllers\StadiumController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('pitches');
+    return view('home');
 })->name('home');
 
 Route::get('/pitches', [StadiumController::class , 'showStadiums'])->name('pitches');  
