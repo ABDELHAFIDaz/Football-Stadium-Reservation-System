@@ -48,4 +48,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function stadiums()
+    {
+        return $this->hasMany(Stadium::class, 'managerId', 'id');
+    }
+
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'customerId', 'id');
+    }
 }

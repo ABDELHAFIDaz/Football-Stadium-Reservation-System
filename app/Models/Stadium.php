@@ -26,4 +26,20 @@ class Stadium extends Model
         'open_until' => 'datetime:H:i',
         'price_per_hour' => 'float',
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'managerId', 'id');
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'customerId', 'id');
+    }
 }
