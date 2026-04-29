@@ -189,7 +189,7 @@
               <!-- <span class="text-[.7rem] text-yellow-400">★ 4.8</span>
             <span class="text-[.7rem] text-white/30">·</span>
             <span class="text-[.7rem] text-white/35">24 reviews</span> -->
-              <span class="ml-auto text-[.7rem] text-neon font-semibold">Book →</span>
+              <a href="{{ route('stadium.book', $stadium->id) }}" class="ml-auto text-[.7rem] text-neon font-semibold">Book →</a>
             </div>
           </div>
         </a>
