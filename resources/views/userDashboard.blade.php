@@ -11,7 +11,7 @@
   <div class="flex items-center justify-between mb-8">
     <div>
       <div class="text-[.7rem] font-semibold text-neon uppercase tracking-widest mb-1">Welcome back</div>
-      <h1 class="font-bebas text-4xl tracking-wide text-white">YOUSSEF'S DASHBOARD</h1>
+      <h1 class="font-bebas text-4xl tracking-wide text-white">{{ $user->fullname }}'S DASHBOARD</h1>
     </div>
     <a href="{{ route('pitches') }}" class="bg-neon text-ink font-syne font-bold text-sm tracking-wider px-6 py-3 rounded-xl hover:opacity-90 transition-all" style="box-shadow:0 0 24px rgba(61,255,122,.2)">+ Book a Pitch</a>
   </div>
@@ -20,19 +20,23 @@
   <div class="grid grid-cols-4 gap-4 mb-8">
     <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
       <div class="text-white/35 text-xs uppercase tracking-widest mb-2">Total Bookings</div>
-      <div class="font-bebas text-4xl text-white">12<span class="text-neon">+</span></div>
+      <div class="font-bebas text-4xl text-white">{{ $reservationsCounter }}<span class="text-neon"></span></div>
     </div>
     <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
       <div class="text-white/35 text-xs uppercase tracking-widest mb-2">This Month</div>
-      <div class="font-bebas text-4xl text-white">3</div>
+      <div class="font-bebas text-4xl text-white">{{ $thisMonthReservations }}</div>
     </div>
     <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
-      <div class="text-white/35 text-xs uppercase tracking-widest mb-2">Hours Played</div>
-      <div class="font-bebas text-4xl text-white">18<span class="text-neon">h</span></div>
+      <div class="text-white/35 text-xs uppercase tracking-widest mb-2">Pending Ones</div>
+      <div class="font-bebas text-4xl text-white">{{ $pendingReservationCounter }}<span class="text-neon"></span></div>
     </div>
     <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
       <div class="text-white/35 text-xs uppercase tracking-widest mb-2">Total Spent</div>
-      <div class="font-bebas text-4xl text-white">2.4<span class="text-neon">K</span></div>
+      @if($totalSpent >= 1000)
+      <div class="font-bebas text-4xl text-white">{{ $totalSpent / 1000 }}<span class="text-neon">K</span></div>
+      @else
+      <div class="font-bebas text-4xl text-white">{{ $totalSpent }}</div>
+      @endif
     </div>
   </div>
 
