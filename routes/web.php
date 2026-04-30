@@ -20,7 +20,9 @@ Route::get('/pitches', [StadiumController::class, 'showStadiums'])->name('pitche
 Route::get('/pitches/{stadium}/book', [ReservationController::class, 'book'])->name('stadium.book');
 
 // for fetching depending on the date(when the date changes)
-Route::get('/pitches/{stadium}/slots', [ReservationController::class, 'slots'])->name('stadiums.slots');
+Route::get('/pitches/{stadium}/slots', [ReservationController::class, 'slots'])->name('stadium.slots');
+
+Route::post('/pitches/{stadium}/reserve', [ReservationController::class, 'store'])->name('reservation.store');
 
 
 require_once "Auth.php";
