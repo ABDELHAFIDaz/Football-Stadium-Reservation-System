@@ -19,6 +19,7 @@ class Stadium extends Model
         'stadium_image_url',
         'open_from',
         'open_until',
+        'note',
     ];
 
     protected $casts = [

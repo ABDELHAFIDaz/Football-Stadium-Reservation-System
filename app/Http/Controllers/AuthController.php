@@ -33,7 +33,7 @@ class AuthController extends Controller
             $service = new AuthService();
             $service->register($validData);
 
-            return redirect('/');
+            return redirect()->route('home');
         } catch (\Exception) {
             return back()->with('error', 'Something went wrong.');
         }
@@ -58,7 +58,7 @@ class AuthController extends Controller
         if ($user->role === 'admin') {
             return redirect('/admin');
         } else {
-            return redirect('/');
+            return redirect()->route('home');
         }
     }
 
@@ -68,6 +68,6 @@ class AuthController extends Controller
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
-        return redirect('/');
+        return redirect()->route('home');
     }
 }

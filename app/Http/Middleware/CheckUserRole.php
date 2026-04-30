@@ -17,8 +17,11 @@ class CheckUserRole
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
 
+        if(in_array('guest', $roles)) // just for login and the sign up pages
+            return $next($request);
+
         if(Auth::guest())
-            return redirect()->route('login');
+            return redirect()->route('login.page');
 
         $userRole = Auth::user()->role;
 

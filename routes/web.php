@@ -8,6 +8,11 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+// just for testing 
+Route::get('/userDashboard', function () {
+    return view('userDashboard');
+})->name('user.dashboard');
+
 Route::prefix('manager')->group(function () {
     Route::get('/addStad', [StadiumController::class, 'addStaduim'])->name('manager.addStad');
     Route::get('/editStad/{stadium}', [StadiumController::class, 'editStaduim'])->name('manager.editStad');
@@ -16,13 +21,9 @@ Route::prefix('manager')->group(function () {
 
 Route::get('/pitches', [StadiumController::class, 'showStadiums'])->name('pitches');
 
-// for the booking page
-Route::get('/pitches/{stadium}/book', [ReservationController::class, 'book'])->name('stadium.book');
 
-// for fetching depending on the date(when the date changes)
-Route::get('/pitches/{stadium}/slots', [ReservationController::class, 'slots'])->name('stadium.slots');
 
-Route::post('/pitches/{stadium}/reserve', [ReservationController::class, 'store'])->name('reservation.store');
 
 
 require_once "Auth.php";
+require_once "booking.php";
