@@ -150,14 +150,9 @@
 
     </div>
 
-    <!-- PAGINATION -->
-    <!-- <div class="flex items-center justify-center gap-2 mt-10">
-      <button class="w-9 h-9 rounded-lg bg-neon text-ink font-syne font-bold text-sm">1</button>
-      <button class="w-9 h-9 rounded-lg bg-card border border-neon/10 text-white/50 text-sm hover:border-neon/25 hover:text-white transition-all">2</button>
-      <button class="w-9 h-9 rounded-lg bg-card border border-neon/10 text-white/50 text-sm hover:border-neon/25 hover:text-white transition-all">3</button>
-      <span class="text-white/25 text-sm px-2">…</span>
-      <button class="w-9 h-9 rounded-lg bg-card border border-neon/10 text-white/50 text-sm hover:border-neon/25 hover:text-white transition-all">8</button>
-    </div> -->
+    <div class="mt-8 pagination-neon">
+      {{ $stadiums->links() }}
+    </div>
 
   </main>
 </div>

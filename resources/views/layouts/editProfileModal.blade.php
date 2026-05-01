@@ -10,7 +10,7 @@
             <button onclick="closeModal()" class="text-white/30 hover:text-white text-xl">✕</button>
         </div>
 
-        <form action="" method="POST">
+        <form action="{{ route('update.profile') }}" method="POST">
             @csrf
             @method('PATCH')
             <div class="space-y-5">

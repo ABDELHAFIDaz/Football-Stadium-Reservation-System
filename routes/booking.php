@@ -13,4 +13,6 @@ Route::middleware(['role:customer'])->group(function () {
     Route::get('/pitches/{stadium}/slots', [ReservationController::class, 'slots'])->name('stadium.slots');
 
     Route::post('/pitches/{stadium}/reserve', [ReservationController::class, 'store'])->name('reservation.store');
+
+    Route::patch('/pitches/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservation.cancel');
 });

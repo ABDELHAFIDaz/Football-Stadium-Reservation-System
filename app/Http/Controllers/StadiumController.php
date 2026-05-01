@@ -11,7 +11,7 @@ class StadiumController extends Controller
     public function showStadiums()
     {
 
-        $stadiums = Stadium::all();
+        $stadiums = Stadium::paginate(9);
         $cities = City::all();
         
         return view('pitches', compact('stadiums', 'cities'));

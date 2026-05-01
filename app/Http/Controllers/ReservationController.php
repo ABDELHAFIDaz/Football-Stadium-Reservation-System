@@ -150,4 +150,24 @@ class ReservationController extends Controller
 
             ->with('success', 'Slot reservation is sent to the owner ✅');
     }
+
+
+
+    public function cancel(Reservation $reservation)
+    {
+
+        if (in_array($reservation->status, ['pending', 'confirmed'])) {
+
+            $reservation->update([
+                'status' => 'canceled'
+            ]);
+        }
+
+        return back();
+    }
+
+
+    public function endReservation() {
+        
+    }
 }

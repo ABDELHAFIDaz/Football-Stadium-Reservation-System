@@ -9,6 +9,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/userDashboard', [UserDashboardController::class, 'index'])->name('user.dashboard')->middleware(['role:customer']);
+Route::patch('/updateProfile', [UserDashboardController::class, 'update'])->name('update.profile')->middleware(['role:customer']);
 
 Route::prefix('manager')->group(function () {
     Route::get('/addStad', [StadiumController::class, 'addStaduim'])->name('manager.addStad');

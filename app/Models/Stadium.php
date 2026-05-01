@@ -41,6 +41,6 @@ class Stadium extends Model
 
     public function reservations()
     {
-        return $this->hasMany(Reservation::class, 'customerId', 'id');
+        return $this->hasMany(Reservation::class, 'stadium_id', 'id');
     }
 }

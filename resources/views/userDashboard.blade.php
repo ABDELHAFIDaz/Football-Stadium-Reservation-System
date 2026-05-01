@@ -19,11 +19,11 @@
   <!-- STATS -->
   <div class="grid grid-cols-4 gap-4 mb-8">
     <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
-      <div class="text-white/35 text-xs uppercase tracking-widest mb-2">Total Bookings</div>
+      <div class="text-white/35 text-xs uppercase tracking-widest mb-2">Total Bookings (Confirmed, Ended)</div>
       <div class="font-bebas text-4xl text-white">{{ $reservationsCounter }}<span class="text-neon"></span></div>
     </div>
     <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
-      <div class="text-white/35 text-xs uppercase tracking-widest mb-2">This Month</div>
+      <div class="text-white/35 text-xs uppercase tracking-widest mb-2">This Month (Confirmed, Ended)</div>
       <div class="font-bebas text-4xl text-white">{{ $thisMonthReservations }}</div>
     </div>
     <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
@@ -42,7 +42,7 @@
 
   <div class="grid grid-cols-3 gap-6">
 
-    <!-- UPCOMING BOOKINGS -->
+    <!-- BOOKINGS -->
     <div class="col-span-2">
       <div class="flex items-center justify-between mb-4">
         <div class="font-syne font-bold text-sm text-white">Reservations</div>
@@ -71,7 +71,13 @@
               @if(in_array($reservation->status, ['pending', 'confirmed']))
               <div class="flex flex-col gap-2">
                 <!-- <button class="min-w-[80px] text-[0.6rem] font-bold text-white/40 hover:text-white border border-neon/10 hover:border-neon/25 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">Modify</button> -->
-                <button class="min-w-[80px] text-[0.6rem] font-bold text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/30 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">Cancel</button>
+                <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST">
+                  @csrf
+                  @method('PATCH')
+                  <button type="submit" class="w-full min-w-[80px] text-[0.6rem] font-bold text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/30 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">
+                    Cancel
+                  </button>
+                </form>
               </div>
               @endif
 
@@ -147,20 +153,20 @@
 
 @section('scripts')
 <script>
-    function openModal() {
-        document.getElementById('profileModal').classList.remove('hidden');
-    }
+  function openModal() {
+    document.getElementById('profileModal').classList.remove('hidden');
+  }
 
-    function closeModal() {
-        document.getElementById('profileModal').classList.add('hidden');
-    }
+  function closeModal() {
+    document.getElementById('profileModal').classList.add('hidden');
+  }
 
-    // Optional: Close if user clicks outside the modal box
-    window.onclick = function(event) {
-        let modal = document.getElementById('profileModal');
-        if (event.target == modal) {
-            closeModal();
-        }
+  // Optional: Close if user clicks outside the modal box
+  window.onclick = function(event) {
+    let modal = document.getElementById('profileModal');
+    if (event.target == modal) {
+      closeModal();
     }
+  }
 </script>
 @endsection
