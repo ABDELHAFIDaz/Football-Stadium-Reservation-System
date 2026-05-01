@@ -15,4 +15,6 @@ Route::middleware(['role:customer'])->group(function () {
     Route::post('/pitches/{stadium}/reserve', [ReservationController::class, 'store'])->name('reservation.store');
 
     Route::patch('/pitches/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservation.cancel');
+
+    Route::patch('/reservations/{reservation}', [ReservationController::class, 'update'])->name('reservation.update');
 });

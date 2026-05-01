@@ -167,7 +167,51 @@ class ReservationController extends Controller
     }
 
 
-    public function endReservation() {
-        
+    public function update(Reservation $reservation, Request $request)
+    {
+        if ($reservation->customerId !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'date'       => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+        ]);
+
+        // Check new slot is not already taken by someone else
+        $alreadyBooked = Reservation::where('stadium_id', $reservation->stadium_id)
+            ->where('reservation_date', $request->date)
+            ->where('start_time', $request->start_time)
+            ->whereIn('status', ['pending', 'confirmed'])
+            ->where('id', '!=', $reservation->id)
+            ->exists();
+
+        if ($alreadyBooked) {
+            return back()->with('error', 'This slot is already taken. Please pick another one.');
+        }
+
+        // Check if the user is trying to "update" to the exact same time they already have
+        if (
+            $reservation->reservation_date->toDateString() === $request->date &&
+            $reservation->start_time->format('H:i') === $request->start_time
+        ) {
+
+            return redirect()
+                ->route('user.dashboard')
+                ->with('info', 'No changes were made to the reservation.');
+        }
+
+        $endTime = date('H:i', strtotime($request->start_time . ' +1 hour'));
+
+        $reservation->update([
+            'reservation_date' => $request->date,
+            'start_time'       => $request->start_time,
+            'end_time'         => $endTime,
+            'status'           => 'pending',
+        ]);
+
+        return redirect()
+            ->route('user.dashboard')
+            ->with('success', 'Reservation updated successfully! ✅');
     }
 }

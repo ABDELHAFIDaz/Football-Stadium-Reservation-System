@@ -45,6 +45,13 @@
     </div>
     @endif
 
+    @if(session('info'))
+    <div class="mx-10 mt-4 px-4 py-3 bg-blue-950/40 border border-blue-700/50 text-blue-400 text-sm rounded-xl flex items-center gap-2">
+        <span>ℹ️</span>
+        {{ session('info') }}
+    </div>
+    @endif
+
     @if(session('error'))
     <div class="mx-10 mt-4 px-4 py-3 bg-red-950 border border-red-700 text-red-400 text-sm rounded-xl">
         {{ session('error') }}

@@ -70,7 +70,17 @@
 
               @if(in_array($reservation->status, ['pending', 'confirmed']))
               <div class="flex flex-col gap-2">
-                <!-- <button class="min-w-[80px] text-[0.6rem] font-bold text-white/40 hover:text-white border border-neon/10 hover:border-neon/25 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">Modify</button> -->
+                <button onclick="openModifyModal(
+    '{{ route('reservation.update', $reservation->id) }}', 
+    '{{ $reservation->stadium_id }}', 
+    '{{ $reservation->reservation_date->format('Y-m-d') }}', 
+    '{{ $reservation->start_time->format('H:i') }}', 
+    '{{ $reservation->stadium->price_per_hour }}'
+)" class="min-w-[80px] text-[0.6rem] font-bold text-white/40 hover:text-white border border-neon/10 hover:border-neon/25 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">
+                  Modify
+                </button>
+
+
                 <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST">
                   @csrf
                   @method('PATCH')
@@ -148,10 +158,13 @@
 </main>
 
 @include('layouts.editProfileModal')
+@include('layouts.editReservationModal')
 
 @endsection
 
 @section('scripts')
+<script src="{{ asset('js/editReservation.js') }}" defer></script>
+
 <script>
   function openModal() {
     document.getElementById('profileModal').classList.remove('hidden');
