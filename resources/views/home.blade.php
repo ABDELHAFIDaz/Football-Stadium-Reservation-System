@@ -143,18 +143,21 @@
   <!-- SEARCH CARD -->
   <div class="a5 absolute right-14 top-1/2 -translate-y-1/2 w-[330px] bg-card border border-neon/10 rounded-2xl p-7">
     <div class="font-syne font-bold text-[.73rem] tracking-[.12em] uppercase text-neon mb-5">⚽ Find a Pitch</div>
-    <div class="flex flex-col gap-2.5 mb-3">
-      <input class="bg-surface border border-neon/10 rounded-lg px-4 py-3 text-white text-[.85rem] outline-none placeholder-white/25 focus:border-neon/35 transition-colors font-dm w-full" type="text" placeholder="🏙️ City (e.g. Casablanca)">
-      <input class="bg-surface border border-neon/10 rounded-lg px-4 py-3 text-white/35 text-[.85rem] outline-none focus:border-neon/35 transition-colors font-dm w-full" type="date">
-      <select class="bg-surface border border-neon/10 rounded-lg px-4 py-3 text-white/35 text-[.85rem] outline-none focus:border-neon/35 transition-colors font-dm w-full">
-        <option value="" disabled selected>👥 Capacity</option>
-        <option>5-a-side (10 players)</option>
-        <option>7-a-side (14 players)</option>
-        <option>11-a-side (22 players)</option>
-      </select>
-    </div>
-    <button class="w-full bg-neon text-ink font-syne font-bold text-[.85rem] tracking-wider py-3 rounded-lg hover:opacity-88 transition-opacity">Search Available Pitches</button>
-    <p class="text-[.69rem] text-white/30 text-center mt-3"><span class="text-neon font-semibold">24 pitches</span> available right now</p>
+    <form method="get" action="{{ route('pitches') }}">
+      <div class="flex flex-col gap-2.5 mb-3">
+        <select name="city"
+          class="bg-surface border border-neon/10 rounded-lg px-4 py-3 text-white text-[.85rem] outline-none placeholder-white/25 focus:border-neon/35 transition-colors font-dm w-full">
+          <option value="all">All Cities</option>
+          @foreach($cities as $city)
+          <option value="{{ $city->id }}">
+            {{ $city->name }}
+          </option>
+          @endforeach
+        </select>
+      </div>
+      <button type="submit" class="w-full bg-neon text-ink font-syne font-bold text-[.85rem] tracking-wider py-3 rounded-lg hover:opacity-88 transition-opacity">Search Available Pitches</button>
+    </form>
+    <p class="text-[.69rem] text-white/30 text-center mt-3"><span class="text-neon font-semibold">{{ count($cities) }} cities</span> available right now</p>
   </div>
 </section>
 

@@ -15,7 +15,7 @@ function loadSlots(date) {
                     slotsGrid.innerHTML += `
                         <div class="flex flex-col items-center justify-center rounded-xl py-5 bg-red-950 border border-red-900 cursor-not-allowed">
                             <span class="text-white/40 font-semibold text-base">${slot.time}</span>
-                            <span class="text-red-500 text-xs mt-1">Busy</span>
+                            <span class="text-red-500 text-xs mt-1">-</span>
                         </div>`;
                 } else {
                     slotsGrid.innerHTML += `

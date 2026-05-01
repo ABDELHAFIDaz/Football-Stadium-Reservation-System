@@ -8,12 +8,23 @@ use Illuminate\Http\Request;
 
 class StadiumController extends Controller
 {
-    public function showStadiums()
+    public function index(Request $request)
     {
+        $query = Stadium::query();
 
-        $stadiums = Stadium::paginate(9);
+        if ($request->filled('city') && $request->city !== 'all') {
+            $query->where('city_id', $request->city);
+        }
+
+        if ($request->sort === 'price_asc') {
+            $query->orderBy('price_per_hour', 'asc');
+        } elseif ($request->sort === 'price_desc') {
+            $query->orderBy('price_per_hour', 'desc');
+        }
+
+        $stadiums = $query->paginate(9)->withQueryString();
         $cities = City::all();
-        
+
         return view('pitches', compact('stadiums', 'cities'));
     }
 

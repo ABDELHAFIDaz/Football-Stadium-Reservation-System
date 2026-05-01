@@ -59,7 +59,7 @@
       <div class="bg-card border border-neon/10 rounded-2xl divide-y divide-neon/10">
         <div class="flex justify-between px-5 py-3.5"><span class="text-sm text-white/40">Format</span><span class="text-sm text-white font-medium">{{ $stadium->capacity / 2 }}-a-side ({{ $stadium->capacity }} players max)</span></div>
         <div class="flex justify-between px-5 py-3.5"><span class="text-sm text-white/40">Surface</span><span class="text-sm text-white font-medium">Natural Grass</span></div>
-        <div class="flex justify-between px-5 py-3.5"><span class="text-sm text-white/40">Dimensions</span><span class="text-sm text-white font-medium">40m × 20m</span></div>
+        <div class="flex justify-between px-5 py-3.5"><span class="text-sm text-white/40">City</span><span class="text-sm text-white font-medium">{{ $stadium->city->name }}</span></div>
         <div class="flex justify-between px-5 py-3.5"><span class="text-sm text-white/40">Address</span><span class="text-sm text-white font-medium">📍 {{ $stadium->address }}</span></div>
         <div class="flex justify-between px-5 py-3.5"><span class="text-sm text-white/40">Opening hours</span><span class="text-sm text-white font-medium">{{ $openingHours }}</span></div>
         <div class="flex justify-between px-5 py-3.5"><span class="text-sm text-white/40">Manager</span><span class="text-sm text-white font-medium">{{ $manager->fullname }}</span></div>

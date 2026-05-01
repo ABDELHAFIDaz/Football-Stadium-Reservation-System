@@ -1,6 +1,6 @@
 let activeStadiumId = null;
 
-function openModifyModal(actionUrl, stadiumId, currentDate, currentTime, price) {
+function openModifyModal(actionUrl, stadiumId, currentDate, currentTime, price, managerPhone, reservationId) {
     activeStadiumId = stadiumId;
     
     const modal = document.getElementById('modifyModal');
@@ -13,6 +13,11 @@ function openModifyModal(actionUrl, stadiumId, currentDate, currentTime, price) 
     document.getElementById('modalPriceDisplay').innerText = price + ' MAD';
     document.getElementById('selectedTimeLabel').innerText = currentTime;
     document.getElementById('selectedTime').value = currentTime;
+    document.getElementById('modalManagerPhone').innerText = managerPhone;
+    document.getElementById('forReservationId').innerHTML=`
+        @php
+            $reservationId = ${reservationId}
+        @endphp`;
 
     // Load slots
     fetchModalSlots(stadiumId, currentDate);

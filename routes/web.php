@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\StadiumController;
 use App\Http\Controllers\UserDashboardController;
+use App\Models\City;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
+    $cities = City::all();
+    return view('home', compact('cities'));
 })->name('home');
 
 Route::get('/userDashboard', [UserDashboardController::class, 'index'])->name('user.dashboard')->middleware(['role:customer']);
@@ -17,7 +19,7 @@ Route::prefix('manager')->group(function () {
     Route::get('/removeStad', [StadiumController::class, 'removeStadium'])->name('manager.removeStad');
 })->middleware(['role:manager']);
 
-Route::get('/pitches', [StadiumController::class, 'showStadiums'])->name('pitches');
+Route::get('/pitches', [StadiumController::class, 'index'])->name('pitches');
 
 
 

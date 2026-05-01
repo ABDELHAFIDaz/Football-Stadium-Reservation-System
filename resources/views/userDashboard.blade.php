@@ -7,6 +7,13 @@
 <!-- MAIN -->
 <main class="flex-1 px-10 py-8 overflow-y-auto">
 
+  <!-- just to keep the reservation id  for the modify form -->
+  <div id="forReservationId">
+    @php
+    $reservationId = 0
+    @endphp
+  </div>
+
   <!-- HEADER -->
   <div class="flex items-center justify-between mb-8">
     <div>
@@ -49,6 +56,28 @@
       </div>
       <div class="flex flex-col gap-3">
 
+        <!-- Filters -->
+        <form method="GET" class="flex gap-3 mb-4">
+
+          <!-- STATUS -->
+          <select name="status" onchange="this.form.submit()"
+            class="bg-card border border-neon/10 text-white text-xs rounded-lg px-3 py-2">
+            <option value="all">All Status</option>
+            <option value="confirmed" @selected(request('status')=='confirmed' )>✔Confirmed</option>
+            <option value="pending" @selected(request('status')=='pending' )>⏳Pending</option>
+            <option value="canceled" @selected(request('status')=='canceled' )>✖Canceled</option>
+            <option value="ended" @selected(request('status')=='ended' )>🏁Ended</option>
+          </select>
+
+          <!-- SORT -->
+          <select name="sort" onchange="this.form.submit()"
+            class="bg-card border border-neon/10 text-white text-xs rounded-lg px-3 py-2">
+            <option value="desc" @selected(request('sort')=='desc' || !request('sort'))>Newest</option>
+            <option value="asc" @selected(request('sort')=='asc' )>Oldest</option>
+          </select>
+
+        </form>
+
         @foreach($reservations as $reservation)
         <div class="bg-card border border-neon/15 rounded-2xl p-5 mb-4">
           <div class="flex items-start justify-between gap-6">
@@ -75,11 +104,12 @@
     '{{ $reservation->stadium_id }}', 
     '{{ $reservation->reservation_date->format('Y-m-d') }}', 
     '{{ $reservation->start_time->format('H:i') }}', 
-    '{{ $reservation->stadium->price_per_hour }}'
+    '{{ $reservation->stadium->price_per_hour }}',
+    '{{ $reservation->stadium->user->phone_number }}',
+    '{{ $reservation->id }}'
 )" class="min-w-[80px] text-[0.6rem] font-bold text-white/40 hover:text-white border border-neon/10 hover:border-neon/25 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">
                   Modify
                 </button>
-
 
                 <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST">
                   @csrf
@@ -100,7 +130,26 @@
               @case('ended')     bg-white/5 text-white/40 border-white/10 @break
               @default           bg-white/5 text-white border-white/10
           @endswitch">
-                  {{ ucfirst($reservation->status) }}
+                  @switch($reservation->status)
+                  @case('confirmed')
+                  <span>✔</span> <span>Confirmed</span>
+                  @break
+
+                  @case('pending')
+                  <span>⏳</span> <span>Pending</span>
+                  @break
+
+                  @case('canceled')
+                  <span>✖</span> <span>Canceled</span>
+                  @break
+
+                  @case('ended')
+                  <span>🏁</span> <span>Ended</span>
+                  @break
+
+                  @default
+                  <span>•</span> <span>{{ ucfirst($status) }}</span>
+                  @endswitch
                 </div>
                 <div class="font-syne font-bold text-neon text-sm">{{ $reservation->total_price }} MAD</div>
               </div>
@@ -109,6 +158,12 @@
           </div>
         </div>
         @endforeach
+
+        @if(count($reservations) === 0)
+        <h1 class="font-syne font-bold text-lg text-white">
+          Nothing At The Moment!
+        </h1>
+        @endif
 
       </div>
     </div>
@@ -150,6 +205,11 @@
         </button>
       </div>
     </div>
+
+    @if(count($reservations) !== 0)
+    <p class="text-white/75 text-xs mb-1">⚠️ You can only modify reservations that are at least 3 hours ahead.</p>
+    @endif
+
   </div>
 
   <div class="mt-8 pagination-neon">
