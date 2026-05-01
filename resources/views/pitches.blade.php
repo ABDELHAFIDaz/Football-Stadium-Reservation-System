@@ -37,7 +37,7 @@
 
 @section('content')
 
-<div class="flex min-h-[calc(100vh-64px)]">
+<div class="flex">
 
   <!-- SIDEBAR FILTERS -->
   <aside class="w-[260px] flex-shrink-0 border-r border-neon/10 bg-surface px-6 py-8 sticky top-[64px] h-[calc(100vh-64px)] overflow-y-auto">
@@ -85,11 +85,8 @@
       <div class="flex items-center gap-3">
         <span class="text-xs text-white/35">Sort by:</span>
         <select class="bg-card border border-neon/10 rounded-lg px-3 py-2 text-white/70 text-xs outline-none focus:border-neon/30 transition-all">
-          <!-- <option>Relevance</option> -->
           <option>Price: Low to High</option>
           <option>Price: High to Low</option>
-          <!-- <option>Rating</option> -->
-          <!-- <option>Nearest</option> -->
         </select>
       </div>
     </div>
@@ -98,60 +95,57 @@
     <div class="grid grid-cols-3 gap-5">
 
       @foreach($stadiums as $stadium)
+      <div class="group bg-card border border-neon/10 rounded-2xl overflow-hidden hover:border-neon/25 transition-all hover:-translate-y-0.5">
 
-      <a href="pitch-detail.html" class="group bg-card border border-neon/10 rounded-2xl overflow-hidden hover:border-neon/25 transition-all hover:-translate-y-0.5">
-        <div
-          @if($stadium->status === 'available')
-          class="relative h-44" style="background:linear-gradient(135deg,#0a2015 0%,#0c1f18 100%)"
-
-          @elseif($stadium->status === 'reserved')
-          class="relative h-44" style="background:linear-gradient(135deg,#FFFF99 0%,#FFFF66 100%)"
-
-          @else
-          class="relative h-44" style="background:linear-gradient(135deg,#1f1a0a 0%,#1a150a 100%)">
-
-          @endif
-          >
+        {{-- Card Header: Dynamic Background Gradients --}}
+        <div class="relative h-44 
+    @if($stadium->status === 'available') bg-gradient-to-br from-[#0a2015] to-[#0c1f18]
+    @elseif($stadium->status === 'reserved') bg-gradient-to-br from-yellow-500/10 to-yellow-600/20
+    @else bg-gradient-to-br from-[#1f1a0a] to-[#1a150a] @endif">
 
           <div class="absolute inset-0 field-grid opacity-70"></div>
-          @if($stadium->status === 'available')
-          <div class="absolute inset-0 flex items-center justify-center text-6xl opacity-15">🏟️</div>
-          <div class="absolute top-3 left-3 bg-neon text-ink text-[.62rem] font-syne font-bold px-2 py-1 rounded-full">Available</div>
-          @elseif($stadium->status === 'reserved')
-          <div class="absolute inset-0 flex items-center justify-center text-6xl opacity-15">🏟️</div>
-          <div class="absolute top-3 left-3 bg-yellow-500/90 text-ink text-[.62rem] font-syne font-bold px-2 py-1 rounded-full">Reserved</div>
-          @else
-          <div class="absolute inset-0 flex items-center justify-center text-6xl opacity-15">🏟️</div>
-          <div class="absolute top-3 left-3 bg-red-500/90 text-white text-[.62rem] font-syne font-bold px-2 py-1 rounded-full">Not Working</div>
-          @endif
-          <div class="absolute top-3 right-3 bg-ink/70 text-white text-[.62rem] font-semibold px-2 py-1 rounded-full backdrop-blur-sm">{{ $stadium->capacity / 2 }}-a-side</div>
-          <!-- <div class="absolute bottom-3 left-3 flex gap-1.5">
-              <span class="bg-ink/60 text-white/70 text-[.6rem] px-2 py-0.5 rounded-full backdrop-blur-sm">🌿 Grass</span>
-              <span class="bg-ink/60 text-white/70 text-[.6rem] px-2 py-0.5 rounded-full backdrop-blur-sm">💡 Floodlit</span>
-            </div> -->
+
+          {{-- Status Badges --}}
+          <div class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[.62rem] font-syne font-bold tracking-wider uppercase
+      @if($stadium->status === 'available') bg-neon text-ink
+      @elseif($stadium->status === 'reserved') bg-yellow-500 text-ink
+      @else bg-red-500 text-white @endif">
+            {{ $stadium->status }}
+          </div>
+
+          {{-- Visual Elements --}}
+          <div class="absolute inset-0 flex items-center justify-center text-6xl opacity-10">🏟️</div>
+          <div class="absolute top-3 right-3 bg-ink/70 text-white text-[.62rem] font-semibold px-2 py-1 rounded-full backdrop-blur-sm border border-white/5">
+            {{ $stadium->capacity / 2 }}-a-side
+          </div>
         </div>
+
+        {{-- Card Body --}}
         <div class="p-4">
           <div class="flex items-start justify-between mb-1.5">
-            <div>
-              <div class="font-syne font-bold text-sm text-white">{{ $stadium->name }}</div>
-              <div class="text-[.72rem] text-white/35 mt-0.5">📍 {{ $stadium->address }}</div>
+            <div class="max-w-[160px]">
+              <div class="font-syne font-bold text-sm text-white truncate">{{ $stadium->name }}</div>
+              <div class="text-[.72rem] text-white/35 mt-1 truncate">📍 {{ $stadium->address }}</div>
             </div>
             <div class="text-right">
-              <div class="font-syne font-bold text-neon text-sm">{{ $stadium->price_per_hour }} MAD</div>
+              <div class="font-syne font-bold text-neon text-sm">{{ number_format($stadium->price_per_hour, 0) }} MAD</div>
               <div class="text-[.65rem] text-white/30">/hour</div>
             </div>
           </div>
-          <div class="flex items-center gap-3 mt-3 pt-3 border-t border-neon/10">
-            <!-- <span class="text-[.7rem] text-yellow-400">★ 4.8</span>
-            <span class="text-[.7rem] text-white/30">·</span>
-            <span class="text-[.7rem] text-white/35">24 reviews</span> -->
+
+          {{-- Action Row --}}
+          <div class="flex items-center justify-end mt-4 pt-3 border-t border-neon/5">
             @auth
-            <a href="{{ route('stadium.book', $stadium->id) }}" class="ml-auto text-[.7rem] text-neon font-semibold">Book →</a>
+            @if($stadium->status !== 'not working')
+            <a href="{{ route('stadium.book', $stadium->id) }}"
+              class="inline-flex items-center text-[.75rem] text-neon font-bold hover:text-white transition-colors group/link">
+              BOOK <span class="ml-1 group-hover/link:translate-x-1 transition-transform">→</span>
+            </a>
+            @endif
             @endauth
           </div>
         </div>
-      </a>
-
+      </div>
       @endforeach
 
     </div>
@@ -164,4 +158,9 @@
       <span class="text-white/25 text-sm px-2">…</span>
       <button class="w-9 h-9 rounded-lg bg-card border border-neon/10 text-white/50 text-sm hover:border-neon/25 hover:text-white transition-all">8</button>
     </div> -->
-    @endsection
+
+  </main>
+</div>
+
+
+@endsection

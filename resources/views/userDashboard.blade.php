@@ -45,144 +45,77 @@
     <!-- UPCOMING BOOKINGS -->
     <div class="col-span-2">
       <div class="flex items-center justify-between mb-4">
-        <div class="font-syne font-bold text-sm text-white">Upcoming Reservations</div>
-        <a href="#" class="text-xs text-neon hover:opacity-75 transition-opacity">View all →</a>
+        <div class="font-syne font-bold text-sm text-white">Reservations</div>
       </div>
       <div class="flex flex-col gap-3">
 
-        <!-- Booking card -->
-        <div class="bg-card border border-neon/15 rounded-2xl p-5">
-          <div class="flex items-start justify-between">
+        @foreach($reservations as $reservation)
+        <div class="bg-card border border-neon/15 rounded-2xl p-5 mb-4">
+          <div class="flex items-start justify-between gap-6">
+
             <div class="flex gap-4">
               <div class="w-12 h-12 bg-neon/10 border border-neon/15 rounded-xl flex items-center justify-center text-xl">🏟️</div>
               <div>
-                <div class="font-syne font-bold text-sm text-white">Stade Al Fath</div>
-                <div class="text-[.72rem] text-white/40 mt-0.5">📍 Casablanca, Maarif</div>
+                <div class="font-syne font-bold text-sm text-white">{{ $reservation->stadium->name }}</div>
+                <div class="text-[.72rem] text-white/40 mt-0.5">📍 {{ $reservation->stadium->address }}</div>
                 <div class="flex items-center gap-3 mt-2">
-                  <span class="text-[.72rem] text-white/50">📅 April 5, 2025</span>
-                  <span class="text-[.72rem] text-white/50">⏰ 18:00 – 19:00</span>
-                  <span class="text-[.72rem] text-white/50">5-a-side</span>
+                  <span class="text-[.72rem] text-white/50">📅 {{ $reservation->reservation_date->format('M d, Y') }}</span>
+                  <span class="text-[.72rem] text-white/50">⏰ {{ $reservation->start_time->format('H:i') }} – {{ $reservation->end_time->format('H:i') }}</span>
+                  <span class="text-[.72rem] text-white/50">{{ $reservation->stadium->capacity }}-a-side</span>
                 </div>
               </div>
             </div>
-            <div class="text-right">
-              <div class="bg-neon/10 text-neon text-[.65rem] font-syne font-bold px-2.5 py-1 rounded-full border border-neon/20 mb-2">CONFIRMED</div>
-              <div class="font-syne font-bold text-neon text-sm">165 MAD</div>
-            </div>
-          </div>
-          <div class="flex gap-2 mt-4 pt-4 border-t border-neon/10">
-            <button class="text-xs text-white/40 hover:text-white border border-neon/10 hover:border-neon/25 px-4 py-1.5 rounded-lg transition-all">Modify</button>
-            <button class="text-xs text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/30 px-4 py-1.5 rounded-lg transition-all">Cancel</button>
-          </div>
-        </div>
 
-        <div class="bg-card border border-neon/10 rounded-2xl p-5">
-          <div class="flex items-start justify-between">
-            <div class="flex gap-4">
-              <div class="w-12 h-12 bg-neon/10 border border-neon/15 rounded-xl flex items-center justify-center text-xl">⚽</div>
-              <div>
-                <div class="font-syne font-bold text-sm text-white">Terrain Anfa Sport</div>
-                <div class="text-[.72rem] text-white/40 mt-0.5">📍 Casablanca, Anfa</div>
-                <div class="flex items-center gap-3 mt-2">
-                  <span class="text-[.72rem] text-white/50">📅 April 9, 2025</span>
-                  <span class="text-[.72rem] text-white/50">⏰ 20:00 – 21:30</span>
-                  <span class="text-[.72rem] text-white/50">7-a-side</span>
-                </div>
+            <div class="flex items-start gap-4">
+
+              @if(in_array($reservation->status, ['pending', 'confirmed']))
+              <div class="flex flex-col gap-2">
+                <!-- <button class="min-w-[80px] text-[0.6rem] font-bold text-white/40 hover:text-white border border-neon/10 hover:border-neon/25 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">Modify</button> -->
+                <button class="min-w-[80px] text-[0.6rem] font-bold text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/30 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">Cancel</button>
               </div>
-            </div>
-            <div class="text-right">
-              <div class="bg-yellow-500/10 text-yellow-400 text-[.65rem] font-syne font-bold px-2.5 py-1 rounded-full border border-yellow-500/20 mb-2">PENDING</div>
-              <div class="font-syne font-bold text-neon text-sm">315 MAD</div>
+              @endif
+
+              <div class="flex flex-col items-end min-w-[100px]">
+                <div class="px-2.5 py-1 rounded-full border mb-2 text-[.65rem] font-syne font-bold uppercase tracking-wider
+          @switch($reservation->status)
+              @case('confirmed') bg-neon/10 text-neon border-neon/20 @break
+              @case('pending')   bg-yellow-500/10 text-yellow-500 border-yellow-500/20 @break
+              @case('canceled')  bg-red-500/10 text-red-500 border-red-500/20 @break
+              @case('ended')     bg-white/5 text-white/40 border-white/10 @break
+              @default           bg-white/5 text-white border-white/10
+          @endswitch">
+                  {{ ucfirst($reservation->status) }}
+                </div>
+                <div class="font-syne font-bold text-neon text-sm">{{ $reservation->total_price }} MAD</div>
+              </div>
+
             </div>
           </div>
-          <div class="flex gap-2 mt-4 pt-4 border-t border-neon/10">
-            <button class="text-xs text-white/40 hover:text-white border border-neon/10 hover:border-neon/25 px-4 py-1.5 rounded-lg transition-all">Modify</button>
-            <button class="text-xs text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/30 px-4 py-1.5 rounded-lg transition-all">Cancel</button>
-          </div>
         </div>
+        @endforeach
 
-      </div>
-
-      <!-- PAST BOOKINGS -->
-      <div class="mt-7">
-        <div class="font-syne font-bold text-sm text-white mb-4">Recent History</div>
-        <div class="bg-card border border-neon/10 rounded-2xl overflow-hidden">
-          <table class="w-full text-sm">
-            <thead>
-              <tr class="border-b border-neon/10">
-                <th class="text-left px-5 py-3 text-[.7rem] text-white/35 font-semibold uppercase tracking-widest">Pitch</th>
-                <th class="text-left px-5 py-3 text-[.7rem] text-white/35 font-semibold uppercase tracking-widest">Date</th>
-                <th class="text-left px-5 py-3 text-[.7rem] text-white/35 font-semibold uppercase tracking-widest">Duration</th>
-                <th class="text-left px-5 py-3 text-[.7rem] text-white/35 font-semibold uppercase tracking-widest">Amount</th>
-                <th class="text-left px-5 py-3 text-[.7rem] text-white/35 font-semibold uppercase tracking-widest">Status</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-neon/10">
-              <tr class="hover:bg-surface/50 transition-colors">
-                <td class="px-5 py-3.5 text-white/70">Stade Al Fath</td>
-                <td class="px-5 py-3.5 text-white/50">Mar 28</td>
-                <td class="px-5 py-3.5 text-white/50">1h</td>
-                <td class="px-5 py-3.5 text-white/70">165 MAD</td>
-                <td class="px-5 py-3.5"><span class="text-[.65rem] font-syne font-bold text-neon bg-neon/10 px-2 py-0.5 rounded-full">Done</span></td>
-              </tr>
-              <tr class="hover:bg-surface/50 transition-colors">
-                <td class="px-5 py-3.5 text-white/70">Complexe Raja</td>
-                <td class="px-5 py-3.5 text-white/50">Mar 20</td>
-                <td class="px-5 py-3.5 text-white/50">2h</td>
-                <td class="px-5 py-3.5 text-white/70">715 MAD</td>
-                <td class="px-5 py-3.5"><span class="text-[.65rem] font-syne font-bold text-neon bg-neon/10 px-2 py-0.5 rounded-full">Done</span></td>
-              </tr>
-              <tr class="hover:bg-surface/50 transition-colors">
-                <td class="px-5 py-3.5 text-white/70">Anfa Sport</td>
-                <td class="px-5 py-3.5 text-white/50">Mar 14</td>
-                <td class="px-5 py-3.5 text-white/50">1h</td>
-                <td class="px-5 py-3.5 text-white/70">215 MAD</td>
-                <td class="px-5 py-3.5"><span class="text-[.65rem] font-syne font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full">Cancelled</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
     </div>
 
+
+
     <!-- RIGHT COLUMN -->
     <div class="flex flex-col gap-5">
-      <!-- QUICK BOOK -->
-      <div class="bg-card border border-neon/10 rounded-2xl p-5">
-        <div class="font-syne font-bold text-sm text-white mb-4">Quick Book</div>
-        <div class="flex flex-col gap-2.5">
-          <input type="text" placeholder="🏙️ City" class="w-full bg-surface border border-neon/10 rounded-xl px-3 py-2.5 text-white text-xs outline-none placeholder-white/25 focus:border-neon/35 transition-all">
-          <input type="date" class="w-full bg-surface border border-neon/10 rounded-xl px-3 py-2.5 text-white/50 text-xs outline-none focus:border-neon/35 transition-all">
-          <select class="w-full bg-surface border border-neon/10 rounded-xl px-3 py-2.5 text-white/50 text-xs outline-none focus:border-neon/35 transition-all">
-            <option disabled selected>Format</option>
-            <option>5-a-side</option>
-            <option>7-a-side</option>
-            <option>11-a-side</option>
-          </select>
-        </div>
-        <a href="pitches.html" class="mt-3 block w-full text-center bg-neon text-ink font-syne font-bold text-xs tracking-wider py-2.5 rounded-xl hover:opacity-90 transition-opacity">Search →</a>
-      </div>
 
       <!-- FAVORITES -->
       <div class="bg-card border border-neon/10 rounded-2xl p-5">
         <div class="font-syne font-bold text-sm text-white mb-4">Favorites</div>
         <div class="flex flex-col gap-3">
-          <a href="pitch-detail.html" class="flex items-center gap-3 hover:bg-surface rounded-xl px-2 py-1.5 transition-colors -mx-2">
+          @foreach($favoriteStadiums as $favorite)
+          <a href="{{ route('stadium.book', $favorite->id) }}" class="flex items-center gap-3 hover:bg-surface rounded-xl px-2 py-1.5 transition-colors -mx-2">
             <div class="w-9 h-9 bg-neon/10 border border-neon/15 rounded-lg flex items-center justify-center text-base">🏟️</div>
             <div class="flex-1 min-w-0">
-              <div class="font-syne font-semibold text-xs text-white truncate">Stade Al Fath</div>
-              <div class="text-[.65rem] text-white/35">Casablanca · 150 MAD/h</div>
+              <div class="font-syne font-semibold text-xs text-white truncate">{{ $favorite->name }}</div>
+              <div class="text-[.65rem] text-white/35">{{ ucfirst($favorite->city->name) }} · {{ $favorite->price_per_hour }} MAD/h</div>
             </div>
             <span class="text-neon text-xs">→</span>
           </a>
-          <a href="pitch-detail.html" class="flex items-center gap-3 hover:bg-surface rounded-xl px-2 py-1.5 transition-colors -mx-2">
-            <div class="w-9 h-9 bg-neon/10 border border-neon/15 rounded-lg flex items-center justify-center text-base">⚽</div>
-            <div class="flex-1 min-w-0">
-              <div class="font-syne font-semibold text-xs text-white truncate">Complexe Raja</div>
-              <div class="text-[.65rem] text-white/35">Rabat · 350 MAD/h</div>
-            </div>
-            <span class="text-neon text-xs">→</span>
-          </a>
+          @endforeach
         </div>
       </div>
 
@@ -190,15 +123,44 @@
       <div class="bg-card border border-neon/10 rounded-2xl p-5">
         <div class="font-syne font-bold text-sm text-white mb-4">Profile</div>
         <div class="flex flex-col gap-2.5 text-xs">
-          <div class="flex justify-between"><span class="text-white/35">Name</span><span class="text-white">Youssef El Amrani</span></div>
-          <div class="flex justify-between"><span class="text-white/35">Email</span><span class="text-white/70">youssef@email.com</span></div>
-          <div class="flex justify-between"><span class="text-white/35">Phone</span><span class="text-white/70">+212 612 345 678</span></div>
-          <div class="flex justify-between"><span class="text-white/35">Role</span><span class="text-neon font-semibold">Player</span></div>
-          <div class="flex justify-between"><span class="text-white/35">Member since</span><span class="text-white/70">Jan 2025</span></div>
+          <div class="flex justify-between"><span class="text-white/35">FullName</span><span class="text-white">{{ $user->fullname }}</span></div>
+          <div class="flex justify-between"><span class="text-white/35">Email</span><span class="text-white/70">{{ $user->email }}</span></div>
+          <div class="flex justify-between"><span class="text-white/35">Phone</span><span class="text-white/70">{{ $user->phone_number }}</span></div>
+          <div class="flex justify-between"><span class="text-white/35">Member since</span><span class="text-white/70">{{ $user->created_at->format('M Y') }}</span></div>
         </div>
-        <button class="mt-4 w-full text-xs text-white/35 border border-neon/10 hover:border-neon/25 hover:text-white py-2 rounded-xl transition-all">Edit Profile</button>
+        <button onclick="openModal()"
+          class="mt-4 w-full text-xs text-white/35 border border-neon/10 hover:border-neon/25 hover:text-white py-2 rounded-xl transition-all">
+          Edit Profile
+        </button>
       </div>
     </div>
   </div>
 
-  @endsection
+  <div class="mt-8 pagination-neon">
+    {{ $reservations->links() }}
+  </div>
+</main>
+
+@include('layouts.editProfileModal')
+
+@endsection
+
+@section('scripts')
+<script>
+    function openModal() {
+        document.getElementById('profileModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('profileModal').classList.add('hidden');
+    }
+
+    // Optional: Close if user clicks outside the modal box
+    window.onclick = function(event) {
+        let modal = document.getElementById('profileModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
+@endsection

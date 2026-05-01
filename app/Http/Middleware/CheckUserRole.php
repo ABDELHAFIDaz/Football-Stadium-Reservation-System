@@ -17,15 +17,22 @@ class CheckUserRole
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
 
-        if(in_array('guest', $roles)) // just for login and the sign up pages
+        if (in_array('guest', $roles) && Auth::guest()) // just for login and the sign up pages
             return $next($request);
+        else if(in_array('guest', $roles))
+            return back();
 
-        if(Auth::guest())
+
+
+        if (Auth::guest())
             return redirect()->route('login.page');
+
+
+
 
         $userRole = Auth::user()->role;
 
-        if(! in_array($userRole, $roles))
+        if (! in_array($userRole, $roles))
             abort(403, 'Unauthorized action.');
 
 

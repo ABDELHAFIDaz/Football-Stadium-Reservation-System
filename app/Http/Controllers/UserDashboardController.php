@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Reservation;
+use App\Models\Stadium;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class UserDashboardController extends Controller
     {
         $user = User::findOrFail(Auth::id());
 
-        $reservations = Auth::user()->reservations;
+        $reservations = Auth::user()->reservations()->with('stadium')->orderBy('reservation_date', 'desc')->paginate(4);
 
         $reservationsCounter = Reservation::where('customerId', Auth::id())->whereIn('status', ['confirmed', 'ended'])->count();
 
@@ -24,6 +25,14 @@ class UserDashboardController extends Controller
 
         $thisMonthReservations = Reservation::where('customerId', Auth::id())->whereIn('status', ['confirmed', 'ended'])->whereMonth('reservation_date', Carbon::now()->month)->count();
 
-        return view('userDashboard', compact('user', 'reservations', 'reservationsCounter', 'thisMonthReservations', 'totalSpent', 'pendingReservationCounter'));
+        $favoriteStadiums = Stadium::withCount(['reservations' => function ($query) {
+            $query->where('customerid', Auth::id());
+        }])
+            ->orderBy('reservations_count', 'desc')
+            ->take(3) // Limit to top 5
+            ->get();
+
+
+        return view('userDashboard', compact('user', 'reservations', 'reservationsCounter', 'thisMonthReservations', 'totalSpent', 'pendingReservationCounter', 'favoriteStadiums'));
     }
 }

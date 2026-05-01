@@ -178,7 +178,7 @@
     <div class="relative">
       <div class="font-bebas text-[4rem] leading-none text-neon/10 mb-4 tracking-widest">03</div>
       <div class="font-syne font-bold text-sm text-white mb-2">Book your slot</div>
-      <div class="text-[.82rem] text-white/35 leading-7">Pick your timeslot and confirm your reservation instantly — no waiting.</div>
+      <div class="text-[.82rem] text-white/35 leading-7">Pick your timeslot.</div>
       <div class="absolute top-7 -right-5 w-10 h-px bg-neon/10"></div>
     </div>
     <div>
@@ -202,17 +202,6 @@
   </div>
 </section>
 @endguest
-
-<!-- FOOTER -->
-<footer class="px-14 py-10 border-t border-neon/10 flex items-center justify-between">
-  <div class="font-bebas text-2xl tracking-[3px] text-neon">B<span class="text-white/35">ALL</span>e</div>
-  <div class="flex gap-6">
-    <a href="#" class="text-xs text-white/30 hover:text-white/60 transition-colors">Features</a>
-    <a href="#" class="text-xs text-white/30 hover:text-white/60 transition-colors">Privacy</a>
-    <a href="#" class="text-xs text-white/30 hover:text-white/60 transition-colors">Contact</a>
-  </div>
-  <div class="text-xs text-white/25">© 2025 BALLe. Smart Football Reservations.</div>
-</footer>
 
 @endsection
 
