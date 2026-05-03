@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservation;
+use App\Models\Stadium;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +15,16 @@ class AdminDashboardController extends Controller
     {
         $admin = Auth::user();
 
-        return view('admin.adminDashboard', compact('admin'));
+        $users = User::where('role', '!=', 'admin')->orderby('created_at', 'desc')->limit(4)->get();
+
+        $pitches = Stadium::orderby('created_at', 'desc')->limit(6)->get();
+
+        $customersCounter = User::where('role', 'customer')->count();
+        $managersCounter = User::where('role', 'manager')->count();
+        $pitchesCounter = Stadium::count();
+        $reservationsCounter = Reservation::where('status', 'ended')->count();
+
+        return view('admin.adminDashboard', compact('admin', 'users', 'pitches', 'customersCounter', 'managersCounter', 'pitchesCounter', 'reservationsCounter'));
     }
 
 

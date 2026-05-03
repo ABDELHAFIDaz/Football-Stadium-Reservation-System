@@ -1,7 +1,7 @@
 <!-- SIDEBAR -->
 <aside class="w-[230px] flex-shrink-0 bg-surface border-r border-neon/10 flex flex-col sticky top-0 h-screen">
   <div class="px-6 py-5 border-b border-neon/10">
-    <a href="home.html" class="font-bebas text-2xl tracking-[4px] text-neon">B<span class="text-white">ALL</span>e</a>
+    <a href="{{ route('admin.dashboard') }}" class="font-bebas text-2xl tracking-[4px] text-neon">B<span class="text-white">ALL</span>e</a>
     <div class="text-[.62rem] text-neon/50 font-semibold uppercase tracking-widest mt-0.5">Admin Panel</div>
   </div>
   <div class="px-5 py-5 border-b border-neon/10">
