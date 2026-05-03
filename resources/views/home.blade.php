@@ -116,6 +116,8 @@
 </style>
 @endsection
 
+@include('layouts.navbar')
+
 @section('content')
 <!-- HERO -->
 <section class="relative min-h-screen flex flex-col justify-center px-14 pt-32 pb-20 overflow-hidden">

@@ -36,7 +36,6 @@
 
 <body class="bg-ink text-white min-h-screen flex flex-col">
 
-    @include('layouts.navbar')
 
     {{-- Flash messages --}}
     @if(session('success'))

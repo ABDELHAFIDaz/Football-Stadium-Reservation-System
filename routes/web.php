@@ -10,6 +10,12 @@ Route::get('/', function () {
     return view('home', compact('cities'));
 })->name('home');
 
+
+Route::get('/admin', function () {
+    return view('admin.adminDashboard');
+})->name('admin');
+
+
 Route::get('/pitches', [StadiumController::class, 'index'])->name('pitches');
 
 

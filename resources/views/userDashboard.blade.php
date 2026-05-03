@@ -2,6 +2,8 @@
 
 @section('title', "My Dashboard")
 
+@include('layouts.navbar')
+
 @section('content')
 
 <!-- MAIN -->

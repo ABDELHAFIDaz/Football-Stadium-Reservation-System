@@ -55,8 +55,15 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
+        if ($user->is_banned) {
+            Auth::logout();
+            return redirect()->route('login.page')->with('error', 'Your account has been banned. Please contact the Admin.');
+        }
+
         if ($user->role === 'admin') {
             return redirect('/admin');
+        } else if ($user->role === 'manager') {
+            return redirect()->route('home'); // still needs to be changed, until i add a manager dashboard
         } else {
             return redirect()->route('home');
         }

@@ -35,6 +35,8 @@
 
 @endsection
 
+@include('layouts.navbar')
+
 @section('content')
 
 <div class="flex">
@@ -90,13 +92,13 @@
       <div class="group bg-card border border-neon/10 rounded-2xl overflow-hidden hover:border-neon/25 transition-all hover:-translate-y-0.5">
 
         <div class="relative h-44 
-    @if($stadium->status === 'not working') bg-gradient-to-br from-[#1f1a0a] to-[#1a150a]
+    @if($stadium->status === 'unavailable') bg-gradient-to-br from-[#1f1a0a] to-[#1a150a]
     @else bg-gradient-to-br from-[#0a2015] to-[#0c1f18] @endif">
 
           <div class="absolute inset-0 field-grid opacity-70"></div>
 
           <div class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[.62rem] font-syne font-bold tracking-wider uppercase
-      @if($stadium->status === 'not working')  bg-red-500 text-white
+      @if($stadium->status === 'unavailable')  bg-red-500 text-white
       @else bg-neon text-ink @endif">
             {{ $stadium->status }}
           </div>

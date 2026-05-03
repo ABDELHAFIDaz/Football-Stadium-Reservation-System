@@ -17,6 +17,8 @@
 </style>
 @endsection
 
+@include('layouts.navbar')
+
 @section('content')
 
 <!-- HERO -->
