@@ -222,7 +222,10 @@
 @include('layouts.editProfileModal')
 @include('layouts.editReservationModal')
 
+@include('layouts.footer')
+
 @endsection
+
 
 @section('scripts')
 <script src="{{ asset('js/editReservation.js') }}" defer></script>

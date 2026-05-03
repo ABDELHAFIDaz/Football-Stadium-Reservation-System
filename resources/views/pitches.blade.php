@@ -123,14 +123,12 @@
 
           <div class="flex items-center justify-end mt-4 pt-3 border-t border-neon/5">
             <div class="font-syne text-sm text-white truncate mr-auto">{{ $stadium->city->name }}</div>
-            @auth
-            @if($stadium->status !== 'not working')
+            @if($stadium->status !== 'unavailable')
             <a href="{{ route('stadium.book', $stadium->id) }}"
               class="inline-flex items-center text-[.75rem] text-neon font-bold hover:text-white transition-colors group/link">
               BOOK <span class="ml-1 group-hover/link:translate-x-1 transition-transform">→</span>
             </a>
             @endif
-            @endauth
           </div>
         </div>
       </div>
@@ -145,5 +143,6 @@
   </main>
 </div>
 
+@include('layouts.footer')
 
 @endsection

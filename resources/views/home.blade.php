@@ -208,6 +208,8 @@
 </section>
 @endguest
 
+@include('layouts.footer')
+
 @endsection
 
 @section('scripts')

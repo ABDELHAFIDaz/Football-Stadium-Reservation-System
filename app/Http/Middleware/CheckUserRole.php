@@ -17,11 +17,6 @@ class CheckUserRole
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
 
-        if (Auth::user()->is_banned) {
-            Auth::logout();
-            return redirect()->route('login.page')->with('error', 'Your account has been banned. Please contact the Admin.');
-        }
-
         if (in_array('guest', $roles) && Auth::guest()) // just for login and the sign up pages
             return $next($request);
         else if (in_array('guest', $roles))
@@ -32,7 +27,10 @@ class CheckUserRole
         if (Auth::guest())
             return redirect()->route('login.page');
 
-
+        if (Auth::user()->is_banned) {
+            Auth::logout();
+            return redirect()->route('login.page')->with('error', 'Your account has been banned. Please contact the Admin.');
+        }
 
 
         $userRole = Auth::user()->role;
