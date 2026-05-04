@@ -7,6 +7,7 @@ use App\Models\Stadium;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminDashboardController extends Controller
 {
@@ -68,5 +69,27 @@ class AdminDashboardController extends Controller
 
         $status = $user->is_banned ? 'banned' : 'unbanned';
         return back()->with('success', "User has been successfully {$status}.");
+    }
+
+    public function storeManager(Request $request)
+    {
+        $validated = $request->validate([
+            'fullname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone_number' => 'nullable|string|max:20',
+            'password' => 'required|min:8|max:255',
+        ]);
+
+        User::create([
+            'fullname' => $validated['fullname'],
+            'email' => $validated['email'],
+            'phone_number' => $validated['phone_number'],
+            'password' => Hash::make($validated['password']),
+            'role' => 'manager',
+            'is_adult' => true,
+            'is_banned' => false,
+        ]);
+
+        return back()->with('success', 'Manager account created successfully.');
     }
 }

@@ -12,4 +12,4 @@ Route::middleware(['role:guest'])->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware(['role:customer, manager, admin']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware(['role:customer,manager,admin']);

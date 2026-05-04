@@ -3,24 +3,30 @@
 @section('title', 'User Management')
 
 @section('content')
-<div class="bg-ink text-white flex min-h-screen"> 
+<div class="bg-ink text-white flex min-h-screen">
     @include('layouts.adminSideBar')
 
     <main class="flex-1 px-10 py-8 overflow-y-auto">
         <!-- HEADER & FILTERS -->
         <div class="flex flex-col gap-6 mb-8">
-            <div>
-                <div class="text-[.7rem] font-semibold text-neon uppercase tracking-widest mb-1">Management</div>
-                <h1 class="font-bebas text-4xl tracking-wide text-white">USER DIRECTORY</h1>
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <div class="text-[.7rem] font-semibold text-neon uppercase tracking-widest mb-1">Management</div>
+                    <h1 class="font-bebas text-4xl tracking-wide text-white">USER DIRECTORY</h1>
+                </div>
+                <button onclick="document.getElementById('addManagerModal').classList.remove('hidden')"
+                    class="bg-neon text-ink font-syne font-bold text-xs px-6 py-2.5 rounded-xl hover:opacity-90 transition-all shadow-[0_0_20px_rgba(61,255,122,0.2)]">
+                    + ADD MANAGER
+                </button>
             </div>
 
             <!-- FILTER BAR -->
             <form action="{{ route('admin.users') }}" method="GET" class="flex flex-wrap items-center gap-4 bg-card border border-neon/10 p-4 rounded-2xl">
                 <div class="flex-1 min-w-[200px]">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or email..." 
-                           class="w-full bg-surface border border-neon/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-neon/40 transition-all">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or email..."
+                        class="w-full bg-surface border border-neon/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-neon/40 transition-all">
                 </div>
-                
+
                 <select name="status" class="bg-surface border border-neon/10 rounded-xl px-4 py-2 text-sm text-white/60 outline-none focus:border-neon/40">
                     <option value="">All Status</option>
                     <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active Only</option>
@@ -75,18 +81,18 @@
                         </td>
                         <td class="px-6 py-4">
                             @if($user->is_banned)
-                                <span class="text-[.65rem] text-red-400 bg-red-400/10 px-2 py-0.5 rounded-full font-syne font-bold uppercase">Banned</span>
+                            <span class="text-[.65rem] text-red-400 bg-red-400/10 px-2 py-0.5 rounded-full font-syne font-bold uppercase">Banned</span>
                             @else
-                                <span class="text-[.65rem] text-neon bg-neon/10 px-2 py-0.5 rounded-full font-syne font-bold uppercase">Active</span>
+                            <span class="text-[.65rem] text-neon bg-neon/10 px-2 py-0.5 rounded-full font-syne font-bold uppercase">Active</span>
                             @endif
                         </td>
                         <td class="px-6 py-4 text-right">
                             <form action="{{ route('admin.toggle-ban', $user) }}" method="POST" class="inline">
                                 @csrf
                                 @if($user->is_banned)
-                                    <button type="submit" class="text-[.65rem] text-neon/70 hover:text-neon border border-neon/10 hover:border-neon/25 px-3 py-1 rounded-lg transition-all uppercase font-bold">Unban</button>
+                                <button type="submit" class="text-[.65rem] text-neon/70 hover:text-neon border border-neon/10 hover:border-neon/25 px-3 py-1 rounded-lg transition-all uppercase font-bold">Unban</button>
                                 @else
-                                    <button type="submit" onclick="return confirm('Ban this user?')" class="text-[.65rem] text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/25 px-3 py-1 rounded-lg transition-all uppercase font-bold">Ban</button>
+                                <button type="submit" onclick="return confirm('Ban this user?')" class="text-[.65rem] text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/25 px-3 py-1 rounded-lg transition-all uppercase font-bold">Ban</button>
                                 @endif
                             </form>
                         </td>
@@ -106,4 +112,7 @@
         </div>
     </main>
 </div>
+
+@include('layouts.addManagerModal')
+
 @endsection

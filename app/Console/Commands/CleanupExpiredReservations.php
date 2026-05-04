@@ -28,12 +28,12 @@ class CleanupExpiredReservations extends Command
     {
         $now = now();
 
-        // 1. Confirmed -> Ended (If date + end_time is in the past)
+        // 1. Confirmed to Ended
         Reservation::where('status', 'confirmed')
             ->whereRaw("CONCAT(reservation_date, ' ', end_time) < ?", [$now])
             ->update(['status' => 'ended']);
 
-        // 2. Pending -> Canceled (If date + start_time is in the past)
+        // 2. Pending to Canceled
         Reservation::where('status', 'pending')
             ->whereRaw("CONCAT(reservation_date, ' ', start_time) < ?", [$now])
             ->update(['status' => 'canceled']);

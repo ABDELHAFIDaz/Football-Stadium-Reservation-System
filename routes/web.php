@@ -17,14 +17,15 @@ Route::get('/pitches', [StadiumController::class, 'index'])->name('pitches');
 
 Route::middleware(['role:customer'])->group(function () {
 
-    Route::get('/userDashboard', [UserDashboardController::class, 'index'])->name('user.dashboard')->middleware(['role:customer']);
-    Route::patch('/updateProfile', [UserDashboardController::class, 'update'])->name('update.profile')->middleware(['role:customer']);
+    Route::get('/userDashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::patch('/updateProfile', [UserDashboardController::class, 'update'])->name('update.profile');
 });
 
 
 Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 Route::get('/users', [AdminDashboardController::class, 'users'])->name('admin.users');
 Route::post('/users/{user}/toggle-ban', [AdminDashboardController::class, 'toggleBan'])->name('admin.toggle-ban');
+Route::post('/users/manager', [AdminDashboardController::class, 'storeManager'])->name('admin.users.storeManager');
 Route::middleware(['role:admin'])->group(function () {
 
 
