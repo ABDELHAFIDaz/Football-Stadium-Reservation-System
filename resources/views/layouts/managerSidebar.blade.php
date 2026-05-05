@@ -11,7 +11,7 @@
                 class="flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-syne font-bold transition-all {{ request()->routeIs('manager.dashboard') ? 'bg-[#3dff7a]/10 text-[#3dff7a]' : 'text-white/40 hover:text-white hover:bg-white/5' }}">
                 <span class="text-lg">📊</span> Overview
             </a>
-            <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-syne font-bold text-white/40 hover:text-white hover:bg-white/5 transition-all">
+            <a href="{{ route('manager.reservations') }}" class="flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-syne font-bold text-white/40 hover:text-white hover:bg-white/5 transition-all">
                 <span class="text-lg">📅</span> Reservations
             </a>
             <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-syne font-bold text-white/40 hover:text-white hover:bg-white/5 transition-all">

@@ -33,4 +33,31 @@ class ManagerDashboardController extends Controller
 
         return view('manager.managerDashboard', compact('stats', 'reservations', 'stadiums'));
     }
+
+
+    public function reservations(Request $request)
+    {
+        $managerId = Auth::id();
+
+        $query = Reservation::whereHas('stadium', function ($q) use ($managerId) {
+            $q->where('managerId', $managerId);
+        })->with(['user', 'stadium']);
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('stadium_id')) {
+            $query->where('stadium_id', $request->stadium_id);
+        }
+
+        $sortOrder = $request->get('sort', 'newest') === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('reservation_date', $sortOrder)
+            ->orderBy('start_time', $sortOrder);
+
+        $reservations = $query->paginate(10)->withQueryString();
+        $myStadiums = Stadium::where('managerId', $managerId)->get();
+
+        return view('manager.reservations', compact('reservations', 'myStadiums'));
+    }
 }

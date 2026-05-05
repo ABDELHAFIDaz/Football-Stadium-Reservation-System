@@ -13,6 +13,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/manager/dashboard', [ManagerDashboardController::class, 'index'])->name('manager.dashboard');
+Route::get('/manager/reservations', [ManagerDashboardController::class, 'reservations'])->name('manager.reservations');
 
 
 Route::get('/pitches', [StadiumController::class, 'index'])->name('pitches');
