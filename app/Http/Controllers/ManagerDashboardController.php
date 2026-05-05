@@ -13,7 +13,6 @@ class ManagerDashboardController extends Controller
     {
         $managerId = Auth::id();
 
-        // Statistics
         $stats = [
             'ended' => Reservation::whereHas('stadium', fn($q) => $q->where('managerId', $managerId))
                 ->where('status', 'ended')->count(),
@@ -25,7 +24,6 @@ class ManagerDashboardController extends Controller
                 ->where('status', 'ended')->sum('total_price'),
         ];
 
-        // Recent Data
         $reservations = Reservation::whereHas('stadium', fn($q) => $q->where('managerId', $managerId))
             ->latest()->take(5)->get();
 
@@ -60,4 +58,28 @@ class ManagerDashboardController extends Controller
 
         return view('manager.reservations', compact('reservations', 'myStadiums'));
     }
+
+
+    public function stadiums(Request $request)
+    {
+        $managerId = Auth::id();
+
+        $query = Stadium::where('managerId', $managerId);
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $sortOrder = $request->get('sort', 'newest') === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $sortOrder);
+
+        $stadiums = $query->paginate(10)->withQueryString();
+
+        return view('manager.stadiums', compact('stadiums'));
+    }
+
 }

@@ -68,14 +68,14 @@
                                     @if(in_array($res->status, ['pending', 'confirmed']))
 
                                     @if($res->status == 'pending')
-                                    <form action="{{ route('reservation.confirm', $res->id) }}" method="POST" onsubmit="return confirm('Delete this pitch?')">
+                                    <form action="{{ route('reservation.confirm', $res->id) }}" method="POST" onsubmit="return confirm('Do you want to confirm it?')">
                                         @csrf
                                         @method('PATCH')
                                         <button class="text-xs font-bold text-[#3dff7a] hover:underline">Confirm</button>
                                     </form>
                                     @endif
 
-                                    <form action="{{ route('reservation.cancel', $res->id) }}" method="POST" onsubmit="return confirm('Delete this pitch?')">
+                                    <form action="{{ route('reservation.cancel', $res->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                                         @csrf
                                         @method('PATCH')
                                         <button class="text-xs font-bold text-red-400/60 hover:text-red-400">Cancel</button>

@@ -34,7 +34,7 @@
                     <select name="stadium_id" onchange="this.form.submit()" class="bg-[#0b120f] border border-white/10 text-white/70 text-xs rounded-xl px-4 py-2.5 outline-none focus:border-[#3dff7a]/40">
                         <option value="">All My Stadiums</option>
                         @foreach($myStadiums as $stad)
-                            <option value="{{ $stad->id }}" {{ request('stadium_id') == $stad->id ? 'selected' : '' }}>{{ $stad->name }}</option>
+                        <option value="{{ $stad->id }}" {{ request('stadium_id') == $stad->id ? 'selected' : '' }}>{{ $stad->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -66,12 +66,12 @@
                 <tbody class="divide-y divide-white/5">
                     @forelse($reservations as $res)
                     @php
-                        $statusColors = [
-                            'pending'   => 'bg-orange-500/10 text-orange-400',
-                            'confirmed' => 'bg-[#3dff7a]/10 text-[#3dff7a]',
-                            'canceled'  => 'bg-red-500/10 text-red-400',
-                            'ended'     => 'bg-white/10 text-white/40',
-                        ];
+                    $statusColors = [
+                    'pending' => 'bg-orange-500/10 text-orange-400',
+                    'confirmed' => 'bg-[#3dff7a]/10 text-[#3dff7a]',
+                    'canceled' => 'bg-red-500/10 text-red-400',
+                    'ended' => 'bg-white/10 text-white/40',
+                    ];
                     @endphp
                     <tr class="hover:bg-white/[0.02] transition-all">
                         <td class="px-6 py-5 text-sm text-white font-medium">{{ $res->user->fullname }}</td>
@@ -87,13 +87,24 @@
                         </td>
                         <td class="px-6 py-5 text-right">
                             <div class="flex justify-end gap-3">
-                                @if($res->status == 'pending')
-                                    <button class="text-[0.65rem] font-bold text-[#3dff7a] hover:underline uppercase">Confirm</button>
-                                @endif
                                 @if(in_array($res->status, ['pending', 'confirmed']))
-                                    <button class="text-[0.65rem] font-bold text-red-400/60 hover:text-red-400 uppercase">Cancel</button>
+
+                                @if($res->status == 'pending')
+                                <form action="{{ route('reservation.confirm', $res->id) }}" method="POST" onsubmit="return confirm('Do you want to confirm it?')">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button class="text-xs font-bold text-[#3dff7a] hover:underline">Confirm</button>
+                                </form>
+                                @endif
+
+                                <form action="{{ route('reservation.cancel', $res->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button class="text-xs font-bold text-red-400/60 hover:text-red-400">Cancel</button>
+                                </form>
                                 @else
-                                    <span class="text-white/10 text-xs">—</span>
+                                {{-- This shows for 'cancelled', 'completed', etc. --}}
+                                <span>-</span>
                                 @endif
                             </div>
                         </td>

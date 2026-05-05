@@ -14,6 +14,7 @@ Route::get('/', function () {
 
 Route::get('/manager/dashboard', [ManagerDashboardController::class, 'index'])->name('manager.dashboard');
 Route::get('/manager/reservations', [ManagerDashboardController::class, 'reservations'])->name('manager.reservations');
+Route::get('/manager/stadiums', [ManagerDashboardController::class, 'stadiums'])->name('manager.stadiums');
 
 
 Route::get('/pitches', [StadiumController::class, 'index'])->name('pitches');
