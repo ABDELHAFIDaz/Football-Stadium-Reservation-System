@@ -24,7 +24,7 @@
       <span>👥</span> Users
     </a>
 
-    <a href="#"
+    <a href="{{ route('admin.pitches') }}"
       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all {{ request()->routeIs('admin.pitches') ? 'text-neon bg-neon/10 font-medium' : 'text-white/40 hover:text-white hover:bg-card' }}">
       <span>🏟️</span> All Pitches
     </a>

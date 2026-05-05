@@ -27,7 +27,7 @@
       <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
         <div class="flex items-start justify-between mb-3">
           <div class="w-9 h-9 bg-neon/10 border border-neon/15 rounded-xl flex items-center justify-center text-base">👥</div>
-          <span class="text-[.65rem] text-neon font-syne font-bold bg-neon/10 px-2 py-0.5 rounded-full">BALLe</span>
+          <span class="text-[.65rem] text-neon font-syne font-bold bg-neon/10 px-2 py-0.5 rounded-full">Customers</span>
         </div>
         <div class="font-bebas text-4xl text-white">{{ $customersCounter }}</div>
         <div class="text-[.72rem] text-white/35 mt-1">Total Customers</div>
@@ -35,7 +35,7 @@
       <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
         <div class="flex items-start justify-between mb-3">
           <div class="w-9 h-9 bg-neon/10 border border-neon/15 rounded-xl flex items-center justify-center text-base">👥</div>
-          <span class="text-[.65rem] text-neon font-syne font-bold bg-neon/10 px-2 py-0.5 rounded-full">BALLe</span>
+          <span class="text-[.65rem] text-neon font-syne font-bold bg-neon/10 px-2 py-0.5 rounded-full">Managers</span>
         </div>
         <div class="font-bebas text-4xl text-white">{{ $managersCounter }}</div>
         <div class="text-[.72rem] text-white/35 mt-1">Total Managers</div>
@@ -43,7 +43,7 @@
       <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
         <div class="flex items-start justify-between mb-3">
           <div class="w-9 h-9 bg-neon/10 border border-neon/15 rounded-xl flex items-center justify-center text-base">🏟️</div>
-          <span class="text-[.65rem] text-neon font-syne font-bold bg-neon/10 px-2 py-0.5 rounded-full">BALLe</span>
+          <span class="text-[.65rem] text-neon font-syne font-bold bg-neon/10 px-2 py-0.5 rounded-full">Stadiums</span>
         </div>
         <div class="font-bebas text-4xl text-white">{{ $pitchesCounter }}</div>
         <div class="text-[.72rem] text-white/35 mt-1">Total Stadiums</div>
@@ -51,7 +51,7 @@
       <div class="bg-card border border-neon/10 rounded-2xl px-5 py-5">
         <div class="flex items-start justify-between mb-3">
           <div class="w-9 h-9 bg-neon/10 border border-neon/15 rounded-xl flex items-center justify-center text-base">📅</div>
-          <span class="text-[.65rem] text-neon font-syne font-bold bg-neon/10 px-2 py-0.5 rounded-full">BALLe</span>
+          <span class="text-[.65rem] text-neon font-syne font-bold bg-neon/10 px-2 py-0.5 rounded-full">Reservations</span>
         </div>
         <div class="font-bebas text-4xl text-white">{{ $reservationsCounter }}<span class="text-neon text-2xl"></span></div>
         <div class="text-[.72rem] text-white/35 mt-1">Total Reservations</div>

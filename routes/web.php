@@ -22,16 +22,17 @@ Route::middleware(['role:customer'])->group(function () {
 });
 
 
-Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-Route::get('/users', [AdminDashboardController::class, 'users'])->name('admin.users');
-Route::post('/users/{user}/toggle-ban', [AdminDashboardController::class, 'toggleBan'])->name('admin.toggle-ban');
-Route::post('/users/manager', [AdminDashboardController::class, 'storeManager'])->name('admin.users.storeManager');
-Route::middleware(['role:admin'])->group(function () {
 
+Route::middleware(['role:admin,customer'])->group(function () {
 
-    Route::get('/addStad', [StadiumController::class, 'addStaduim'])->name('admin.addStad');
-    Route::get('/editStad/{stadium}', [StadiumController::class, 'editStaduim'])->name('admin.editStad');
-    Route::get('/removeStad', [StadiumController::class, 'removeStadium'])->name('admin.removeStad');
+    Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/users', [AdminDashboardController::class, 'users'])->name('admin.users');
+    Route::get('/admin/pitches', [StadiumController::class, 'adminIndex'])->name('admin.pitches');
+    Route::post('/users/{user}/toggle-ban', [AdminDashboardController::class, 'toggleBan'])->name('admin.toggle-ban');
+    Route::post('/users/manager', [AdminDashboardController::class, 'storeManager'])->name('admin.users.storeManager');
+    Route::get('/addStad', [StadiumController::class, 'store'])->name('admin.addStad');
+    Route::put('/editStad/{stadium}', [StadiumController::class, 'update'])->name('admin.editStad');
+    Route::delete('/removeStad/{stadium}', [StadiumController::class, 'destroy'])->name('admin.removeStad');
 });
 
 

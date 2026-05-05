@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Stadium;
 use App\Models\City;
+use App\Models\Reservation;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StadiumController extends Controller
 {
@@ -28,19 +31,47 @@ class StadiumController extends Controller
         return view('pitches', compact('stadiums', 'cities'));
     }
 
-    public function addStaduim(Request $request)
+    public function adminIndex(Request $request)
+    {
+        $query = Stadium::query();
+
+        // 1. Search by Stadium Name
+        $query->when($request->search, function ($q) use ($request) {
+            return $q->where('name', 'like', '%' . $request->search . '%');
+        });
+
+        // 2. Filter by City
+        $query->when($request->city_id, function ($q) use ($request) {
+            return $q->where('city_id', $request->city_id);
+        });
+
+        // 3. Filter by Status (available, reserved, unavailable)
+        $query->when($request->status, function ($q) use ($request) {
+            return $q->where('status', $request->status);
+        });
+
+        $pitches = $query->latest()->paginate(10)->withQueryString();
+        $cities = City::all();
+        $managers = User::where('role', 'manager')->get();
+        $admin = Auth::user();
+
+        return view('admin.pitches', compact('pitches', 'cities', 'managers', 'admin'));
+    }
+
+    public function store(Request $request)
     {
 
         $stadiumData = $request->validate([
-            'name' => 'required|string',
-            'city' => 'required|string',
-            'adress' => 'required|string',
+            'name' => 'required|string|max:100',
+            'managerId' => 'required|exists:users,id',
+            'city_id' => 'required|exists:cities,id',
+            'address' => 'required|string|max:100',
             'capacity' => 'required|integer',
-            'description' => 'nullable',
-            'equipments' => 'nullable',
-            'status' => 'required|string',
             'price_per_hour' => 'required|numeric',
-            'stadium_image_url' => 'required|string',
+            'open_from' => 'required',
+            'open_until' => 'required',
+            'equipments' => 'required|string',
+            'status' => 'required|in:available,reserved,unavailable'
         ]);
 
         try {
@@ -53,33 +84,40 @@ class StadiumController extends Controller
         }
     }
 
-    public function editStaduim(Request $request)
+    public function update(Request $request, Stadium $stadium)
     {
 
         $stadiumData = $request->validate([
-            'name' => 'required|string',
-            'city' => 'required|string',
-            'adress' => 'required|string',
-            'capacity' => 'required|integer',
-            'description' => 'nullable',
-            'equipments' => 'nullable',
-            'status' => 'required|string',
+            'name' => 'required|string|max:100',
+            'status' => 'required|in:available,reserved,unavailable',
             'price_per_hour' => 'required|numeric',
-            'stadium_image_url' => 'required|string',
+            'unavailable_from' => 'required_if:status,unavailable|nullable|date',
+            'unavailable_until' => 'required_if:status,unavailable|nullable|date|after_or_equal:unavailable_from',
         ]);
-
         try {
 
-            Stadium::findOrFail($request->id)->update($stadiumData);
+            $stadium->update($stadiumData);
+            if ($stadiumData['status'] === 'unavailable') {
+                $this->cancelConflictingReservations($stadium, $stadiumData['unavailable_from'], $stadiumData['unavailable_until']);
+            }
+            return back()->with('success', 'Stadium updated successfully, and the reservations for that period are cancelled.');
         } catch (\Exception) {
             return back()->with('error', 'Something went wrong');
         }
     }
 
-    public function removeStadium(Stadium $stadium)
+    public function cancelConflictingReservations(Stadium $stadium, $from, $until)
+    {
+        Reservation::where('stadium_id', $stadium->id)
+            ->whereIn('status', ['confirmed', 'pending'])
+            ->whereBetween('reservation_date', [$from, $until])
+            ->update(['status' => 'canceled']);
+    }
+
+    public function destroy(Stadium $stadium)
     {
 
         $stadium->delete();
-        return redirect()->route('home');
+        return redirect()->route('admin.dashboard');
     }
 }
