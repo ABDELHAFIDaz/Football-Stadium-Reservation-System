@@ -167,6 +167,20 @@ class ReservationController extends Controller
     }
 
 
+    public function confirm(Reservation $reservation)
+    {
+
+        if ($reservation->status == 'pending') {
+
+            $reservation->update([
+                'status' => 'confirmed'
+            ]);
+        }
+
+        return back();
+    }
+
+
     public function update(Reservation $reservation, Request $request)
     {
         if ($reservation->customerId !== Auth::id()) {

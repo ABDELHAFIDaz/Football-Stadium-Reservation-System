@@ -87,7 +87,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <form action="{{ route('admin.toggle-ban', $user) }}" method="POST" class="inline">
+                            <form action="{{ route('admin.toggle-ban', $user) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?')">
                                 @csrf
                                 @if($user->is_banned)
                                 <button type="submit" class="text-[.65rem] text-neon/70 hover:text-neon border border-neon/10 hover:border-neon/25 px-3 py-1 rounded-lg transition-all uppercase font-bold">Unban</button>

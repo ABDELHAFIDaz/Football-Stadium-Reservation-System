@@ -71,14 +71,13 @@ class StadiumController extends Controller
             'open_from' => 'required',
             'open_until' => 'required',
             'equipments' => 'required|string',
-            'status' => 'required|in:available,reserved,unavailable'
         ]);
 
         try {
 
             Stadium::create($stadiumData);
 
-            return redirect()->route('home');
+            return redirect()->route('admin.pitches');
         } catch (\Exception) {
             return back()->with('error', 'Something went wrong');
         }
@@ -91,6 +90,9 @@ class StadiumController extends Controller
             'name' => 'required|string|max:100',
             'status' => 'required|in:available,reserved,unavailable',
             'price_per_hour' => 'required|numeric',
+            'note' => 'nullable|string|max:500',
+            'open_from' => 'required|date_format:H:i',
+            'open_until' => 'required|date_format:H:i|after:open_from',
             'unavailable_from' => 'required_if:status,unavailable|nullable|date',
             'unavailable_until' => 'required_if:status,unavailable|nullable|date|after_or_equal:unavailable_from',
         ]);

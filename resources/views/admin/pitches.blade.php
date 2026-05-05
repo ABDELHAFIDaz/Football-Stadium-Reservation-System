@@ -93,44 +93,11 @@
     </main>
 </div>
 
-@include('layouts.pitchesModals')
+@include('layouts.addPitchModal')
+@include('layouts.editPitchModal')
 
-<script>
-    function toggleModal(id) {
-        document.getElementById(id).classList.toggle('hidden');
-    }
+@endsection
 
-    function openEditModal(pitch) {
-        const form = document.getElementById('editPitchForm');
-        form.action = `/admin/pitches/${pitch.id}`;
-        document.getElementById('edit_name').value = pitch.name;
-        toggleModal('editPitchModal');
-    }
-
-    function openEditModal(pitch) {
-        const form = document.getElementById('editPitchForm');
-        form.action = `/editStad/${pitch.id}`;
-
-        // Fill basic fields
-        document.getElementById('edit_name').value = pitch.name;
-        document.getElementById('edit_price').value = pitch.price_per_hour;
-        document.getElementById('edit_status').value = pitch.status;
-
-        toggleModal('editPitchModal');
-    }
-
-    function toggleUnavailableInputs(value) {
-        const container = document.getElementById('unavailable_dates_container');
-        if (value === 'unavailable') {
-            container.classList.remove('hidden');
-            // Optional: Set default start date to today
-            document.getElementById('edit_unavailable_from').valueAsDate = new Date();
-        } else {
-            container.classList.add('hidden');
-            // Clear values if switched back to available
-            document.getElementById('edit_unavailable_from').value = '';
-            document.getElementById('edit_unavailable_until').value = '';
-        }
-    }
-</script>
+@section('scripts')
+<script src="{{ asset('js/editStadium.js') }}"></script>
 @endsection

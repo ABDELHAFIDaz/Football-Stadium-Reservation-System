@@ -16,12 +16,12 @@
             <div class="space-y-5">
                 <div>
                     <label class="block text-[0.65rem] uppercase tracking-widest text-white/40 mb-2 font-bold">Email Address</label>
-                    <input type="email" name="email" value="{{ $user->email }}" required
+                    <input type="email" name="email" value="{{ auth()->user()->email }}" required
                         class="w-full bg-surface border border-neon/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-neon/40 transition-all">
                 </div>
                 <div>
                     <label class="block text-[0.65rem] uppercase tracking-widest text-white/40 mb-2 font-bold">Phone Number</label>
-                    <input type="text" name="phone_number" value="{{ $user->phone_number }}" required
+                    <input type="text" name="phone_number" value="{{ auth()->user()->phone_number }}" required
                         class="w-full bg-surface border border-neon/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-neon/40 transition-all">
                 </div>
                 <div class="flex gap-3 pt-4">

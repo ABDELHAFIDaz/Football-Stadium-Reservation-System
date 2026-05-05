@@ -104,14 +104,14 @@
                   <td class="px-5 py-3.5"><span class="text-[.65rem] text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full font-syne font-bold">Banned</span></td>
                   <td class="px-5 py-3.5">
                     <div class="flex gap-1.5">
-                      <form action="{{ route('admin.toggle-ban', $user->id) }}" method="post">@csrf<button class="text-[.65rem] text-neon/70 hover:text-neon border border-neon/10 hover:border-neon/25 px-2 py-0.5 rounded-lg transition-all">UnBan</button></form>
+                      <form action="{{ route('admin.toggle-ban', $user->id) }}" method="post" onsubmit="return confirm('Unban this user?')">@csrf<button class="text-[.65rem] text-neon/70 hover:text-neon border border-neon/10 hover:border-neon/25 px-2 py-0.5 rounded-lg transition-all">UnBan</button></form>
                     </div>
                   </td>
                   @else
                   <td class="px-5 py-3.5"><span class="text-[.65rem] text-neon bg-neon/10 px-2 py-0.5 rounded-full font-syne font-bold">Active</span></td>
                   <td class="px-5 py-3.5">
                     <div class="flex gap-1.5">
-                      <form action="{{ route('admin.toggle-ban', $user->id) }}" method="post">@csrf<button class="text-[.65rem] text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/25 px-2 py-0.5 rounded-lg transition-all">Ban</button></form>
+                      <form action="{{ route('admin.toggle-ban', $user->id) }}" method="post" onsubmit="return confirm('Ban this User?')">@csrf<button class="text-[.65rem] text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/25 px-2 py-0.5 rounded-lg transition-all">Ban</button></form>
                     </div>
                   </td>
                   @endif
@@ -156,67 +156,6 @@
           </div>
         </div>
       </div>
-
-      <!-- RIGHT COLUMN -->
-      <!-- <div class="flex flex-col gap-5"> -->
-
-        <!-- SYSTEM HEALTH -->
-        <!-- <div class="bg-card border border-neon/10 rounded-2xl p-5">
-          <div class="font-syne font-bold text-sm text-white mb-4">System Health</div>
-          <div class="flex flex-col gap-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-neon inline-block"></span><span class="text-xs text-white/60">API Server</span></div><span class="text-[.7rem] text-neon font-semibold">Online</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-neon inline-block"></span><span class="text-xs text-white/60">Database</span></div><span class="text-[.7rem] text-neon font-semibold">Online</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-neon inline-block"></span><span class="text-xs text-white/60">Email Service</span></div><span class="text-[.7rem] text-neon font-semibold">Online</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-yellow-400 inline-block"></span><span class="text-xs text-white/60">Cache</span></div><span class="text-[.7rem] text-yellow-400 font-semibold">Degraded</span>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-neon/10 text-[.7rem] text-white/30">Uptime: <span class="text-neon">99.8%</span> this month</div>
-        </div> -->
-
-        <!-- PENDING APPROVALS -->
-        <!-- <div class="bg-card border border-neon/10 rounded-2xl p-5">
-          <div class="font-syne font-bold text-sm text-white mb-4">Pending Approvals <span class="text-neon bg-neon/10 text-[.65rem] px-2 py-0.5 rounded-full ml-1">3</span></div>
-          <div class="flex flex-col gap-3">
-            <div class="bg-surface rounded-xl p-3">
-              <div class="text-xs text-white/70 mb-0.5 font-medium">New Pitch Request</div>
-              <div class="text-[.68rem] text-white/35 mb-2.5">Stade Ibn Batouta · Tanger · Omar A.</div>
-              <div class="flex gap-2">
-                <button class="flex-1 text-[.68rem] font-syne font-bold text-neon bg-neon/10 border border-neon/20 py-1 rounded-lg hover:bg-neon/15 transition-all">Approve</button>
-                <button class="flex-1 text-[.68rem] font-syne font-bold text-red-400 bg-red-500/10 border border-red-500/15 py-1 rounded-lg hover:bg-red-500/15 transition-all">Reject</button>
-              </div>
-            </div>
-            <div class="bg-surface rounded-xl p-3">
-              <div class="text-xs text-white/70 mb-0.5 font-medium">Manager Registration</div>
-              <div class="text-[.68rem] text-white/35 mb-2.5">Fatima Z. · Sport Arena Marrakech</div>
-              <div class="flex gap-2">
-                <button class="flex-1 text-[.68rem] font-syne font-bold text-neon bg-neon/10 border border-neon/20 py-1 rounded-lg hover:bg-neon/15 transition-all">Approve</button>
-                <button class="flex-1 text-[.68rem] font-syne font-bold text-red-400 bg-red-500/10 border border-red-500/15 py-1 rounded-lg hover:bg-red-500/15 transition-all">Reject</button>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- PLATFORM STATS -->
-        <!-- <div class="bg-card border border-neon/10 rounded-2xl p-5">
-          <div class="font-syne font-bold text-sm text-white mb-4">Platform Stats</div>
-          <div class="flex flex-col gap-3 text-xs">
-            <div class="flex justify-between"><span class="text-white/35">Active players</span><span class="text-white">1,148</span></div>
-            <div class="flex justify-between"><span class="text-white/35">Active managers</span><span class="text-white">36</span></div>
-            <div class="flex justify-between"><span class="text-white/35">Pitches available now</span><span class="text-neon font-semibold">24</span></div>
-            <div class="flex justify-between"><span class="text-white/35">Bookings today</span><span class="text-white">89</span></div>
-            <div class="flex justify-between"><span class="text-white/35">Avg. rating</span><span class="text-yellow-400">★ 4.7</span></div>
-            <div class="flex justify-between"><span class="text-white/35">Cancellation rate</span><span class="text-white">8.2%</span></div>
-          </div>
-        </div> -->
-      <!-- </div> -->
-
     </div>
 </div>
 @endsection

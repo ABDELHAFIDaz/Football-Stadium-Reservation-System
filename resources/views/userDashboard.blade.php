@@ -113,7 +113,7 @@
                   Modify
                 </button>
 
-                <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST">
+                <form action="{{ route('reservation.cancel', $reservation->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                   @csrf
                   @method('PATCH')
                   <button type="submit" class="w-full min-w-[80px] text-[0.6rem] font-bold text-red-400/70 hover:text-red-400 border border-red-500/10 hover:border-red-400/30 px-3 py-1.5 rounded-lg transition-all uppercase tracking-wider">
