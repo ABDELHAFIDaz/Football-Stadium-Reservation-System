@@ -21,7 +21,6 @@ class AuthService
             'role' => 'customer',
         ]);
 
-        // to login the new user automatically, without needing tyhe user to login after the sign up
         if ($newUser) {
             Auth::login($newUser);
         }
@@ -30,12 +29,16 @@ class AuthService
 
     public function login($credentials)
     {
-        if (Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials)) 
+            return 'invalid';
+        
+        session()->regenerate();
 
-            session()->regenerate();
-            return true;        
+        if(Auth::user()->is_banned){
+            Auth::logout();
+            return 'banned';
         }
 
-        return false;
+        return Auth::user()->role;
     }
 }

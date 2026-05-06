@@ -78,7 +78,7 @@
                         <td class="px-6 py-5 text-sm text-white/80">{{ $res->stadium->name }}</td>
                         <td class="px-6 py-5 text-xs text-white/40">{{ $res->user->phone_number ?? 'N/A' }}</td>
                         <td class="px-6 py-5 text-xs text-white/60">
-                            {{ $res->reservation_date }} <span class="text-[#3dff7a]/30 mx-1">|</span> {{ $res->start_time }} - {{ $res->end_time }}
+                            {{ $res->reservation_date->format('Y-M-d') }} <span class="text-[#3dff7a]/30 mx-1">|</span> {{ $res->start_time->format('H:i') }} - {{ $res->end_time->format('H:i') }}
                         </td>
                         <td class="px-6 py-5">
                             <span class="text-[0.6rem] px-2 py-1 rounded font-bold uppercase {{ $statusColors[$res->status] ?? 'bg-white/5 text-white/30' }}">

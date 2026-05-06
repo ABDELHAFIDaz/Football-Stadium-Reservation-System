@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+
+    public function __construct(private AuthService $authService) {}
+
+
     public function loginPage()
     {
         return view('auth.login');
@@ -30,8 +34,7 @@ class AuthController extends Controller
 
         try {
 
-            $service = new AuthService();
-            $service->register($validData);
+            $this->authService->register($validData);
 
             return redirect()->route('home');
         } catch (\Exception) {
@@ -43,30 +46,16 @@ class AuthController extends Controller
     {
         $credentials = $request->validate([
             'email' => 'required|string|email',
-            'password' => 'required|string|max:255'
+            'password' => 'required|string|max:255',
         ]);
 
-
-        $service = new AuthService();
-
-        if (!$service->login($credentials)) {
-            return back()->withErrors(['email' => 'Invalide email or password'])->withInput();
-        }
-
-        $user = Auth::user();
-
-        if ($user->is_banned) {
-            Auth::logout();
-            return redirect()->route('login.page')->with('error', 'Your account has been banned. Please contact the Admin.');
-        }
-
-        if ($user->role === 'admin') {
-            return redirect('/admin');
-        } else if ($user->role === 'manager') {
-            return redirect()->route('home'); // still needs to be changed, until i add a manager dashboard
-        } else {
-            return redirect()->route('home');
-        }
+        return match ($this->authService->login($credentials)) {
+            'invalid' => back()->withErrors(['email' => 'Invalid email or password'])->withInput(),
+            'banned'  => redirect()->route('login.page')->with('error', 'Your account has been banned. Please contact the Admin.'),
+            'admin'   => redirect()->route('admin.dashboard'),
+            'manager' => redirect()->route('manager.dashboard'),
+            default   => redirect()->route('home'),
+        };
     }
 
 
