@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Models\Reservation;
 use App\Models\Stadium;
-use App\Models\User;
 use App\Repositories\Interfaces\ReservationRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Mail\ReservationConfirmed;
+use App\Mail\ReservationCanceled;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationService
 {
@@ -77,6 +79,8 @@ class ReservationService
     {
         if (in_array($reservation->status, ['pending', 'confirmed'])) {
             $this->reservationRepository->update($reservation, ['status' => 'canceled']);
+            $reservation->load('user', 'stadium');
+            Mail::to($reservation->user->email)->send(new ReservationCanceled($reservation));
         }
     }
 
@@ -84,6 +88,8 @@ class ReservationService
     {
         if ($reservation->status === 'pending') {
             $this->reservationRepository->update($reservation, ['status' => 'confirmed']);
+            $reservation->load('user', 'stadium');
+            Mail::to($reservation->user->email)->send(new ReservationConfirmed($reservation));
         }
     }
 
