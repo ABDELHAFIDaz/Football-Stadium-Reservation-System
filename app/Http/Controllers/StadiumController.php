@@ -51,6 +51,6 @@ class StadiumController extends Controller
     public function destroy(Stadium $stadium)
     {
         $this->stadiumService->deleteStadium($stadium);
-        return redirect()->route('admin.dashboard');
+        return back()->with('success', 'Stadium deleted successfully.');
     }
 }

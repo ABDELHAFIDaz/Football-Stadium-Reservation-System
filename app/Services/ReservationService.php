@@ -88,6 +88,10 @@ class ReservationService
         $this->reservationRepository->cancelConflicting($stadium->id, $from, $until);
     }
 
+    public function deletedStadiumReservations(Stadium $stadium) {
+        $this->reservationRepository->cancelAll($stadium->id);
+    }
+
     // for the manager dashboard
 
     public function getManagerStats(int $managerId)

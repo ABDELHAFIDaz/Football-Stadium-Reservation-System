@@ -5,7 +5,6 @@ use App\Http\Controllers\ManagerDashboardController;
 use App\Http\Controllers\StadiumController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\HomeController;
-use App\Models\City;
 use Illuminate\Support\Facades\Route;
 
 

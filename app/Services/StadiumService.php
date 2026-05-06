@@ -3,66 +3,49 @@
 namespace App\Services;
 
 use App\Models\Stadium;
+use App\Repositories\Interfaces\StadiumRepositoryInterface;
 use Illuminate\Http\Request;
 
 class StadiumService
 {
-    public function __construct(private ReservationService $reservationService) {}
+    public function __construct(
+        private StadiumRepositoryInterface $stadiumRepository,
+        private ReservationService $reservationService
+    ) {}
 
     public function getFilteredStadiums(Request $request)
     {
-        return Stadium::query()
-            ->when(
-                $request->filled('city') && $request->city !== 'all',
-                fn($q) => $q->where('city_id', $request->city)
-            )
-            ->when($request->sort === 'price_asc',  fn($q) => $q->orderBy('price_per_hour', 'asc'))
-            ->when($request->sort === 'price_desc', fn($q) => $q->orderBy('price_per_hour', 'desc'))
-            ->paginate(9)
-            ->withQueryString();
+        return $this->stadiumRepository->getFilteredStadiums($request);
     }
 
     public function getAdminFilteredStadiums(Request $request)
     {
-        return Stadium::query()
-            ->when($request->filled('search'),  fn($q) => $q->where('name', 'like', '%' . $request->search . '%'))
-            ->when($request->filled('city_id'), fn($q) => $q->where('city_id', $request->city_id))
-            ->when($request->filled('status'),  fn($q) => $q->where('status', $request->status))
-            ->latest()
-            ->paginate(10)
-            ->withQueryString();
+        return $this->stadiumRepository->getAdminFilteredStadiums($request);
     }
 
     public function getManagerStadiums(int $managerId)
     {
-        return Stadium::where('managerId', $managerId)->get();
+        return $this->stadiumRepository->getManagerStadiums($managerId);
     }
 
     public function getManagerStadiumPreview(int $managerId)
     {
-        return Stadium::where('managerId', $managerId)->limit(3)->get();
+        return $this->stadiumRepository->getManagerStadiumPreview($managerId);
     }
 
     public function getFilteredManagerStadiums(int $managerId, Request $request)
     {
-        $sortOrder = $request->get('sort', 'newest') === 'oldest' ? 'asc' : 'desc';
-
-        return Stadium::where('managerId', $managerId)
-            ->when($request->filled('search'), fn($q) => $q->where('name', 'like', '%' . $request->search . '%'))
-            ->when($request->filled('status'), fn($q) => $q->where('status', $request->status))
-            ->orderBy('created_at', $sortOrder)
-            ->paginate(10)
-            ->withQueryString();
+        return $this->stadiumRepository->getFilteredManagerStadiums($managerId, $request);
     }
 
-    public function createStadium(array $data)
+    public function createStadium(array $data): Stadium
     {
-        return Stadium::create($data);
+        return $this->stadiumRepository->create($data);
     }
 
-    public function updateStadium(Stadium $stadium, array $data)
+    public function updateStadium(Stadium $stadium, array $data): void
     {
-        $stadium->update($data);
+        $this->stadiumRepository->update($stadium, $data);
 
         if ($data['status'] === 'unavailable') {
             $this->reservationService->cancelConflictingReservations(
@@ -73,8 +56,9 @@ class StadiumService
         }
     }
 
-    public function deleteStadium(Stadium $stadium)
+    public function deleteStadium(Stadium $stadium): void
     {
-        $stadium->delete();
+        $this->reservationService->deletedStadiumReservations($stadium->id);
+        $this->stadiumRepository->delete($stadium);
     }
 }

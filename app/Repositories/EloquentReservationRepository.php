@@ -29,4 +29,11 @@ class EloquentReservationRepository implements ReservationRepositoryInterface
             ->whereBetween('reservation_date', [$from, $until])
             ->update(['status' => 'canceled']);
     }
+
+    public function cancelAll(int $stadiumId): void
+    {
+        Reservation::where('stadium_id', $stadiumId)
+            ->whereIn('status', ['confirmed', 'pending'])
+            ->update(['status' => 'canceled']);
+    }
 }
