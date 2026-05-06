@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreManagerRequest;
 use App\Models\City;
 use App\Models\User;
 use App\Services\AdminDashboardService;
@@ -38,16 +39,10 @@ class AdminDashboardController extends Controller
         }
     }
 
-    public function storeManager(Request $request)
+    public function storeManager(StoreManagerRequest $request)
     {
-        $validated = $request->validate([
-            'fullname'     => 'required|string|max:255',
-            'email'        => 'required|email|unique:users,email',
-            'phone_number' => 'nullable|string|max:20',
-            'password'     => 'required|min:8|max:255',
-        ]);
 
-        $this->adminDashboardService->createManager($validated);
+        $this->adminDashboardService->createManager($request->validated());
 
         return back()->with('success', 'Manager account created successfully.');
     }

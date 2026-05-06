@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreReservationRequest;
+use App\Http\Requests\UpdateReservationRequest;
 use App\Models\Reservation;
 use App\Models\Stadium;
 use App\Services\ReservationService;
@@ -29,16 +31,11 @@ class ReservationController extends Controller
         return response()->json($slots);
     }
 
-    public function store(Stadium $stadium, Request $request)
+    public function store(Stadium $stadium, StoreReservationRequest $request)
     {
         if (!$request->start_time) {
             return back()->with('error', 'Please select a slot first.');
         }
-
-        $request->validate([
-            'date'       => 'required|date|after_or_equal:today',
-            'start_time' => 'required',
-        ]);
 
         if ($this->reservationService->isSlotTaken($stadium->id, $request->date, $request->start_time)) {
             return back()->with('error', 'This slot was just taken! Please pick another one.');
@@ -63,16 +60,8 @@ class ReservationController extends Controller
         return back();
     }
 
-    public function update(Reservation $reservation, Request $request)
+    public function update(Reservation $reservation, UpdateReservationRequest $request)
     {
-        if ($reservation->customerId !== Auth::id()) {
-            abort(403);
-        }
-
-        $request->validate([
-            'date'       => 'required|date|after_or_equal:today',
-            'start_time' => 'required',
-        ]);
 
         if ($this->reservationService->isSlotTaken($reservation->stadium_id, $request->date, $request->start_time, $reservation->id)) {
             return back()->with('error', 'This slot is already taken. Please pick another one.');
