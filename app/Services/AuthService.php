@@ -2,24 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 
 class AuthService
 {
 
+    public function __construct(private UserRepositoryInterface $userRepository){}
+
     public function register($data)
     {
 
-        $newUser = User::create([
-            'fullname' => $data['fullname'],
-            'email' => $data['email'],
-            'phone_number' => $data['phone_number'],
-            'password' => Hash::make($data['password']),
-            'role' => 'customer',
-        ]);
+        $newUser = $this->userRepository->create($data, 'customer');
 
         if ($newUser) {
             Auth::login($newUser);

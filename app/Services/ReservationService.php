@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use App\Models\Stadium;
 use App\Models\User;
 use App\Repositories\Interfaces\ReservationRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -13,7 +14,10 @@ class ReservationService
 {
 
 
-    public function __construct(private ReservationRepositoryInterface $reservationRepository) {}
+    public function __construct(
+        private ReservationRepositoryInterface $reservationRepository,
+        private UserRepositoryInterface $userRepository
+    ) {}
 
     // for bookings
 
@@ -88,7 +92,8 @@ class ReservationService
         $this->reservationRepository->cancelConflicting($stadium->id, $from, $until);
     }
 
-    public function deletedStadiumReservations(Stadium $stadium) {
+    public function deletedStadiumReservations(Stadium $stadium)
+    {
         $this->reservationRepository->cancelAll($stadium->id);
     }
 
@@ -126,7 +131,7 @@ class ReservationService
 
     public function getStadiumManager(Stadium $stadium)
     {
-        return User::findOrFail($stadium->managerId);
+        return $this->userRepository->find($stadium->managerId);
     }
 
     public function formatOpeningHours(Stadium $stadium)
