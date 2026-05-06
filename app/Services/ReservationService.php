@@ -5,11 +5,16 @@ namespace App\Services;
 use App\Models\Reservation;
 use App\Models\Stadium;
 use App\Models\User;
+use App\Repositories\Interfaces\ReservationRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class ReservationService
 {
+
+
+    public function __construct(private ReservationRepositoryInterface $reservationRepository) {}
+
     // for bookings
 
     public function isSlotTaken(int $stadiumId, string $date, string $startTime, ?int $excludeReservationId = null)
@@ -37,7 +42,7 @@ class ReservationService
 
     public function createReservation(Stadium $stadium, int $customerId, string $date, string $startTime)
     {
-        return Reservation::create([
+        return $this->reservationRepository->create([
             'stadium_id'       => $stadium->id,
             'customerId'       => $customerId,
             'reservation_date' => $date,
@@ -50,7 +55,7 @@ class ReservationService
 
     public function updateReservation(Reservation $reservation, string $date, string $startTime)
     {
-        $reservation->update([
+        $this->reservationRepository->update($reservation, [
             'reservation_date' => $date,
             'start_time'       => $startTime,
             'end_time'         => $this->addOneHour($startTime),
@@ -67,23 +72,20 @@ class ReservationService
     public function cancel(Reservation $reservation)
     {
         if (in_array($reservation->status, ['pending', 'confirmed'])) {
-            $reservation->update(['status' => 'canceled']);
+            $this->reservationRepository->update($reservation, ['status' => 'canceled']);
         }
     }
 
     public function confirm(Reservation $reservation)
     {
         if ($reservation->status === 'pending') {
-            $reservation->update(['status' => 'confirmed']);
+            $this->reservationRepository->update($reservation, ['status' => 'confirmed']);
         }
     }
 
     public function cancelConflictingReservations(Stadium $stadium, string $from, string $until)
     {
-        Reservation::where('stadium_id', $stadium->id)
-            ->whereIn('status', ['confirmed', 'pending'])
-            ->whereBetween('reservation_date', [$from, $until])
-            ->update(['status' => 'canceled']);
+        $this->reservationRepository->cancelConflicting($stadium->id, $from, $until);
     }
 
     // for the manager dashboard
