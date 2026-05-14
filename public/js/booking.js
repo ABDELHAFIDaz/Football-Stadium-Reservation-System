@@ -1,8 +1,6 @@
 const datePicker = document.getElementById('datePicker');
 const slotsGrid  = document.getElementById('slotsGrid');
 const slotsRoute = document.getElementById('slotsRoute').value;
-const storeRoute = document.getElementById('storeRoute').value;
-const csrfToken  = document.getElementById('csrfToken').value;
 
 function loadSlots(date) {
     fetch(`${slotsRoute}?date=${date}`)
